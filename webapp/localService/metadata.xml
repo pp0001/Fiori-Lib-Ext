@@ -1,0 +1,937 @@
+<!--
+
+    Copyright (C) 2009-2019 SAP SE or an SAP affiliate company. All rights reserved.
+
+-->
+<edmx:Edmx xmlns:edmx="http://schemas.microsoft.com/ado/2007/06/edmx"
+	xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata" xmlns:sap="http://www.sap.com/Protocols/SAPData" Version="1.0">
+	<edmx:Reference xmlns:edmx="http://docs.oasis-open.org/odata/ns/edmx" Uri="">
+		<edmx:Include Namespace="com.sap.vocabularies.Common.v1" Alias="Common"/>
+	</edmx:Reference>
+	<edmx:DataServices m:DataServiceVersion="2.0">
+		<Schema xmlns="http://schemas.microsoft.com/ado/2008/09/edm" Namespace="GRCAUD_AUDIT_SRV" xml:lang="en" sap:schema-version="1">
+			<EntityType Name="NameValuePair" sap:content-version="1">
+				<Key>
+					<PropertyRef Name="Name"/>
+				</Key>
+				<Property Name="Value" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false"
+					sap:sortable="false" sap:filterable="false"/>
+				<Property Name="Name" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false"
+					sap:sortable="false" sap:filterable="false"/>
+			</EntityType>
+			<EntityType Name="FRA_IV_UserInformationType" sap:label="User Information" sap:content-version="1">
+				<Key>
+					<PropertyRef Name="UserID"/>
+				</Key>
+				<Property Name="UserID" Type="Edm.String" Nullable="false" MaxLength="12" sap:display-format="UpperCase" sap:text="UserName"
+					sap:label="User"/>
+				<Property Name="UserPhotoURL" Type="Edm.String" MaxLength="255" sap:display-format="UpperCase" sap:label="Photo URL" sap:creatable="false"
+					sap:updatable="false"/>
+				<Property Name="UserName" Type="Edm.String" MaxLength="80" sap:label="Full Name"/>
+				<Property Name="Department" Type="Edm.String" MaxLength="40" sap:label="Department"/>
+				<Property Name="Building" Type="Edm.String" MaxLength="10" sap:label="Building code"/>
+				<Property Name="RoomNumber" Type="Edm.String" MaxLength="10" sap:label="Room Number"/>
+				<Property Name="Floor" Type="Edm.String" MaxLength="10" sap:label="Floor"/>
+				<Property Name="TelephoneNumber" Type="Edm.String" MaxLength="30" sap:display-format="UpperCase" sap:label="Telephone number"/>
+				<Property Name="EmailAddress" Type="Edm.String" MaxLength="241" sap:label="E-Mail Address"/>
+				<Property Name="UserType" Type="Edm.String" MaxLength="1" sap:label="User Type"/>
+			</EntityType>
+			<EntityType Name="GRCAUD_CV_AdtblByAuditType" sap:label="AuditableItems BY Audit" sap:content-version="1">
+				<Key>
+					<PropertyRef Name="DBKey"/>
+					<PropertyRef Name="AuditableItemKey"/>
+				</Key>
+				<Property Name="DBKey" Type="Edm.Guid" Nullable="false" sap:label="UUID"/>
+				<Property Name="AuditableItemKey" Type="Edm.Guid" Nullable="false" sap:label="UUID"/>
+				<Property Name="ID" Type="Edm.String" MaxLength="30" sap:label="ID"/>
+				<Property Name="Title" Type="Edm.String" MaxLength="100" sap:label="Name"/>
+				<Property Name="FreezeTime" Type="Edm.DateTimeOffset" Precision="7" sap:label="Frozen On"/>
+				<Property Name="ValidTo" Type="Edm.DateTimeOffset" Precision="7" sap:label="Valid To"/>
+				<Property Name="MasterReference" Type="Edm.Guid" sap:label="UUID"/>
+				<Property Name="ReleaseStatus" Type="Edm.String" MaxLength="2" sap:display-format="UpperCase" sap:label="Release Status"/>
+				<Property Name="Status" Type="Edm.String" MaxLength="2" sap:display-format="NonNegative" sap:text="StatusText" sap:label="Status"/>
+				<Property Name="StatusText" Type="Edm.String" MaxLength="60" sap:label="Status"/>
+				<Property Name="AuditGroup" Type="Edm.String" MaxLength="10" sap:display-format="UpperCase" sap:text="AuditGroupText" sap:label="Group"/>
+				<Property Name="AuditGroupText" Type="Edm.String" MaxLength="40" sap:label="Group"/>
+				<Property Name="ImpactLevel" Type="Edm.String" MaxLength="2" sap:label="Impact Level"/>
+				<Property Name="RiskLevel" Type="Edm.String" MaxLength="3" sap:display-format="UpperCase" sap:label="Risk Level"/>
+				<Property Name="RiskSequence" Type="Edm.String" MaxLength="2" sap:display-format="NonNegative" sap:label="Risk Level Sequence"/>
+				<Property Name="LikelihoodLevel" Type="Edm.String" MaxLength="3" sap:label="Likelihood Level"/>
+				<Property Name="RequestedAt" Type="Edm.DateTime" Precision="0" sap:display-format="Date" sap:label="Date of Request"/>
+				<Property Name="Source" Type="Edm.String" sap:label="Source"/>
+				<Property Name="Description" Type="Edm.String" sap:label="Description"/>
+				<Property Name="CreatedAt" Type="Edm.DateTimeOffset" Precision="7" sap:label="Creation Timestamp"/>
+				<Property Name="CreatedBy" Type="Edm.String" MaxLength="12" sap:display-format="UpperCase" sap:label="Created by User"/>
+				<Property Name="LastChangedAt" Type="Edm.DateTimeOffset" Precision="7" sap:label="Changed Timestamp"/>
+				<Property Name="LastChangedBy" Type="Edm.String" MaxLength="12" sap:display-format="UpperCase" sap:label="Changed by User"/>
+				<Property Name="RiskScore" Type="Edm.Int32" sap:label="Risk Score"/>
+				<Property Name="HighestRiskScore" Type="Edm.Int32" sap:label="Highest Risk Score"/>
+			</EntityType>
+			<EntityType Name="GRCAUD_CV_AuditActivityHistoryType" sap:label="Activity History of Audit" sap:content-version="1">
+				<Key>
+					<PropertyRef Name="DBKey"/>
+				</Key>
+				<Property Name="DBKey" Type="Edm.Guid" Nullable="false" sap:label="UUID" sap:creatable="false" sap:updatable="false"/>
+				<Property Name="RootKey" Type="Edm.Guid" sap:label="UUID"/>
+				<Property Name="AuditGroup" Type="Edm.String" MaxLength="10" sap:display-format="UpperCase" sap:label="Group"/>
+				<Property Name="ChangeDocumentRootKey" Type="Edm.Guid" sap:label="UUID"/>
+				<Property Name="TableName" Type="Edm.String" MaxLength="16" sap:display-format="UpperCase"/>
+				<Property Name="ObjectTitle" Type="Edm.String" MaxLength="100" sap:label="Name"/>
+				<Property Name="Action" Type="Edm.String" MaxLength="30" sap:display-format="UpperCase" sap:label="Action"/>
+				<Property Name="ActionLevel" Type="Edm.Byte" sap:label="Level"/>
+				<Property Name="Timestamp" Type="Edm.DateTimeOffset" Precision="0" sap:label="Time Stamp"/>
+				<Property Name="HostStatus" Type="Edm.String" MaxLength="2" sap:display-format="UpperCase" sap:label="Status Key"/>
+				<Property Name="HostBOKey" Type="Edm.Guid" sap:label="UUID"/>
+				<Property Name="HostNodeKey" Type="Edm.Guid" sap:label="UUID"/>
+				<Property Name="ObjectType" Type="Edm.String" MaxLength="6" sap:display-format="UpperCase" sap:label="Business Object"/>
+				<Property Name="HostKey" Type="Edm.Guid" sap:label="UUID"/>
+				<Property Name="UserID" Type="Edm.String" MaxLength="12" sap:display-format="UpperCase" sap:label="User Name"/>
+				<Property Name="Delegatee" Type="Edm.String" MaxLength="50" sap:label="User ID"/>
+				<Property Name="PerformedBy" Type="Edm.String" MaxLength="12" sap:display-format="UpperCase"/>
+				<Property Name="PerformedByUserName" Type="Edm.String" MaxLength="80" sap:display-format="UpperCase"/>
+				<Property Name="CommentText" Type="Edm.String"/>
+				<Property Name="IconURL" Type="Edm.String" MaxLength="255" sap:display-format="UpperCase"/>
+				<Property Name="ObjectID" Type="Edm.String" MaxLength="32" sap:display-format="UpperCase"/>
+				<NavigationProperty Name="to_ChangeDocuments" Relationship="GRCAUD_AUDIT_SRV.assoc_848005675B1466E6337B36040FD159DF"
+					FromRole="FromRole_assoc_848005675B1466E6337B36040FD159DF" ToRole="ToRole_assoc_848005675B1466E6337B36040FD159DF"/>
+				<NavigationProperty Name="to_delegatee" Relationship="GRCAUD_AUDIT_SRV.assoc_E87F789C38450E86058C51A9BA18134F"
+					FromRole="FromRole_assoc_E87F789C38450E86058C51A9BA18134F" ToRole="ToRole_assoc_E87F789C38450E86058C51A9BA18134F"/>
+				<NavigationProperty Name="to_PerformedBy" Relationship="GRCAUD_AUDIT_SRV.assoc_4B970C212BFF0C5051FCE08769D84024"
+					FromRole="FromRole_assoc_4B970C212BFF0C5051FCE08769D84024" ToRole="ToRole_assoc_4B970C212BFF0C5051FCE08769D84024"/>
+				<NavigationProperty Name="to_RoleChangeDocuments" Relationship="GRCAUD_AUDIT_SRV.assoc_716283DFA2E2B9962FF1CBD2E68998DB"
+					FromRole="FromRole_assoc_716283DFA2E2B9962FF1CBD2E68998DB" ToRole="ToRole_assoc_716283DFA2E2B9962FF1CBD2E68998DB"/>
+				<NavigationProperty Name="to_user" Relationship="GRCAUD_AUDIT_SRV.assoc_F73BE3A97AC0818AA44D4240384F7EEA"
+					FromRole="FromRole_assoc_F73BE3A97AC0818AA44D4240384F7EEA" ToRole="ToRole_assoc_F73BE3A97AC0818AA44D4240384F7EEA"/>
+			</EntityType>
+			<EntityType Name="GRCAUD_CV_AuditCountType" sap:label="Audit Count" sap:content-version="1">
+				<Key>
+					<PropertyRef Name="DBKey"/>
+				</Key>
+				<Property Name="DBKey" Type="Edm.Guid" Nullable="false" sap:label="UUID"/>
+				<Property Name="AdtblCount" Type="Edm.Int32"/>
+				<Property Name="DimCount" Type="Edm.Int32"/>
+				<Property Name="OrgCount" Type="Edm.Int32"/>
+				<Property Name="RiskCount" Type="Edm.Int32"/>
+			</EntityType>
+			<EntityType Name="GRCAUD_CV_ChangeDocForUserRoleType" sap:label="Change document for user role" sap:content-version="1">
+				<Key>
+					<PropertyRef Name="TableKey"/>
+					<PropertyRef Name="TableName"/>
+					<PropertyRef Name="ObjectID"/>
+					<PropertyRef Name="DocumentChangeNumber"/>
+					<PropertyRef Name="FieldName"/>
+				</Key>
+				<Property Name="TableKey" Type="Edm.String" Nullable="false" MaxLength="70" sap:display-format="UpperCase" sap:label="Table Key"/>
+				<Property Name="TableName" Type="Edm.String" Nullable="false" MaxLength="30" sap:display-format="UpperCase" sap:label="Table Name"/>
+				<Property Name="ObjectID" Type="Edm.String" Nullable="false" MaxLength="90" sap:display-format="UpperCase" sap:label="Object value"/>
+				<Property Name="DocumentChangeNumber" Type="Edm.String" Nullable="false" MaxLength="10" sap:display-format="UpperCase"
+					sap:label="Document number"/>
+				<Property Name="FieldName" Type="Edm.String" Nullable="false" MaxLength="30" sap:display-format="UpperCase" sap:label="Field Name"/>
+				<Property Name="ChangeType" Type="Edm.String" MaxLength="1" sap:display-format="UpperCase" sap:label="Change Indicator"/>
+				<Property Name="CreateAt" Type="Edm.Decimal" Precision="21" Scale="7"/>
+				<Property Name="OldContents" Type="Edm.String" MaxLength="254" sap:display-format="UpperCase" sap:label="Old value"/>
+				<Property Name="NewContents" Type="Edm.String" MaxLength="254" sap:display-format="UpperCase" sap:label="New value"/>
+				<Property Name="IsLongText" Type="Edm.String" MaxLength="1" sap:display-format="UpperCase"/>
+				<Property Name="IntType" Type="Edm.String" MaxLength="1" sap:label="ABAP type"/>
+				<Property Name="DataType" Type="Edm.String" MaxLength="10" sap:display-format="UpperCase" sap:label="Data Type"/>
+				<Property Name="DataElement" Type="Edm.String" MaxLength="30" sap:display-format="UpperCase" sap:label="Data element"/>
+				<Property Name="DataText" Type="Edm.String" MaxLength="20" sap:label="Medium Field Label"/>
+				<Property Name="DateChanged" Type="Edm.DateTime" Precision="0" sap:display-format="Date" sap:label="Date"/>
+				<Property Name="TimeChanged" Type="Edm.Time" Precision="0" sap:label="Time"/>
+				<Property Name="ObjectIDBinary" Type="Edm.Guid" sap:label="UUID"/>
+				<Property Name="NewContentName" Type="Edm.String" MaxLength="80" sap:label="Full Name"/>
+				<Property Name="OldContentName" Type="Edm.String" MaxLength="80" sap:label="Full Name"/>
+				<Property Name="ChangedFieldName" Type="Edm.String" MaxLength="100" sap:display-format="UpperCase"/>
+			</EntityType>
+			<EntityType Name="GRCAUD_CV_ChangeDocumentType" sap:label="Change Document" sap:content-version="1">
+				<Key>
+					<PropertyRef Name="TableKey"/>
+					<PropertyRef Name="TableName"/>
+					<PropertyRef Name="ObjectID"/>
+					<PropertyRef Name="DocumentChangeNumber"/>
+					<PropertyRef Name="FieldName"/>
+				</Key>
+				<Property Name="TableKey" Type="Edm.String" Nullable="false" MaxLength="70" sap:display-format="UpperCase" sap:label="Table Key"/>
+				<Property Name="TableName" Type="Edm.String" Nullable="false" MaxLength="30" sap:display-format="UpperCase" sap:label="Table Name"/>
+				<Property Name="ObjectID" Type="Edm.String" Nullable="false" MaxLength="90" sap:display-format="UpperCase" sap:label="Object value"/>
+				<Property Name="DocumentChangeNumber" Type="Edm.String" Nullable="false" MaxLength="10" sap:display-format="UpperCase"
+					sap:label="Document number"/>
+				<Property Name="FieldName" Type="Edm.String" Nullable="false" MaxLength="30" sap:display-format="UpperCase" sap:label="Field Name"/>
+				<Property Name="ChangeType" Type="Edm.String" MaxLength="1" sap:display-format="UpperCase" sap:label="Change Indicator"/>
+				<Property Name="CreateAt" Type="Edm.Decimal" Precision="21" Scale="7"/>
+				<Property Name="OldContents" Type="Edm.String" MaxLength="254" sap:display-format="UpperCase" sap:label="Old value"/>
+				<Property Name="NewContents" Type="Edm.String" MaxLength="254" sap:display-format="UpperCase" sap:label="New value"/>
+				<Property Name="LongOldContents" Type="Edm.String" MaxLength="1" sap:display-format="UpperCase"/>
+				<Property Name="LongNewContents" Type="Edm.String" MaxLength="1" sap:display-format="UpperCase"/>
+				<Property Name="IsLongText" Type="Edm.String" MaxLength="1" sap:display-format="UpperCase"/>
+				<Property Name="IntType" Type="Edm.String" MaxLength="1" sap:label="ABAP type"/>
+				<Property Name="DataType" Type="Edm.String" MaxLength="10" sap:display-format="UpperCase" sap:label="Data Type"/>
+				<Property Name="DataElement" Type="Edm.String" MaxLength="30" sap:display-format="UpperCase" sap:label="Data element"/>
+				<Property Name="DataText" Type="Edm.String" MaxLength="20" sap:label="Medium Field Label"/>
+				<Property Name="DateChanged" Type="Edm.DateTime" Precision="0" sap:display-format="Date" sap:label="Date"/>
+				<Property Name="TimeChanged" Type="Edm.Time" Precision="0" sap:label="Time"/>
+				<Property Name="ObjectIDBinary" Type="Edm.Guid" sap:label="UUID"/>
+				<Property Name="TableKeyBinary" Type="Edm.Guid" sap:label="UUID"/>
+			</EntityType>
+			<EntityType Name="GRCAUD_CV_DimensionByAuditType" sap:label="Dimension by Audit" sap:content-version="1">
+				<Key>
+					<PropertyRef Name="DBKey"/>
+					<PropertyRef Name="DimensionKey"/>
+				</Key>
+				<Property Name="DBKey" Type="Edm.Binary" Nullable="false" sap:label="NodeID"/>
+				<Property Name="DimensionKey" Type="Edm.Binary" Nullable="false" sap:label="Key"/>
+				<Property Name="DimensionVersionKey" Type="Edm.Guid" sap:label="UUID"/>
+				<Property Name="AssignmentKey" Type="Edm.Binary" sap:label="NodeID"/>
+				<Property Name="ID" Type="Edm.String" MaxLength="30" sap:label="ID"/>
+				<Property Name="Type" Type="Edm.String" MaxLength="10" sap:display-format="UpperCase" sap:label="Dimension Type"/>
+				<Property Name="TypeText" Type="Edm.String" MaxLength="100" sap:label="Dimensions Type"/>
+				<Property Name="Name" Type="Edm.String" MaxLength="100" sap:label="Name"/>
+				<Property Name="Description" Type="Edm.String" sap:label="Description"/>
+				<Property Name="ValidFrom" Type="Edm.DateTimeOffset" Precision="7" sap:label="Time Stamp"/>
+				<Property Name="ValidTo" Type="Edm.DateTimeOffset" Precision="7" sap:label="Time Stamp"/>
+				<Property Name="CreatedAt" Type="Edm.DateTimeOffset" Precision="7" sap:label="Time Stamp"/>
+				<Property Name="CreatedBy" Type="Edm.String" MaxLength="12" sap:display-format="UpperCase" sap:label="User Name"/>
+				<Property Name="LastChangedAt" Type="Edm.DateTimeOffset" Precision="7" sap:label="Time Stamp"/>
+				<Property Name="LastChangedBy" Type="Edm.String" MaxLength="12" sap:display-format="UpperCase" sap:label="User Name"/>
+				<Property Name="Removed" Type="Edm.Boolean" sap:display-format="UpperCase" sap:label="TRUE"/>
+				<Property Name="RiskCount" Type="Edm.Int32" sap:label="Risks"/>
+				<Property Name="Timestamp" Type="Edm.DateTimeOffset" Precision="0" sap:label="Time Stamp"/>
+			</EntityType>
+			<EntityType Name="GRCAUD_CV_FindingType" sap:label="Finding" sap:content-version="1">
+				<Key>
+					<PropertyRef Name="DBKey"/>
+				</Key>
+				<Property Name="Status" Type="Edm.String" MaxLength="2" sap:display-format="UpperCase" sap:label="Status Key"/>
+				<Property Name="StatusText" Type="Edm.String" MaxLength="40" sap:label="Status"/>
+				<Property Name="ExecutiveResponsibleNameList" Type="Edm.String" MaxLength="255" sap:label="Executive Responsible"/>
+				<Property Name="DBKey" Type="Edm.Guid" Nullable="false" sap:label="UUID" sap:creatable="false" sap:updatable="false"/>
+				<Property Name="AuditGroup" Type="Edm.String" MaxLength="10" sap:display-format="UpperCase" sap:text="AuditGroupText" sap:label="Group"/>
+				<Property Name="AuditGroupText" Type="Edm.String" MaxLength="40" sap:label="Audit Group"/>
+				<Property Name="AuditKey" Type="Edm.Guid" sap:label="UUID"/>
+				<Property Name="AuditTitle" Type="Edm.String" MaxLength="100" sap:label="Audit Title"/>
+				<Property Name="AuditCategoryText" Type="Edm.String" MaxLength="40" sap:label="Audit Category"/>
+				<Property Name="AuditTypeText" Type="Edm.String" MaxLength="100" sap:label="Audit Type"/>
+				<Property Name="ID" Type="Edm.String" MaxLength="30" sap:label="ID" sap:creatable="false" sap:updatable="false"/>
+				<Property Name="Title" Type="Edm.String" MaxLength="100" sap:label="Title" sap:creatable="false" sap:updatable="false"/>
+				<Property Name="Description" Type="Edm.String" sap:label="Description"/>
+				<Property Name="Criteria" Type="Edm.String" sap:label="Criteria"/>
+				<Property Name="CauseDescription" Type="Edm.String" sap:label="Cause"/>
+				<Property Name="ConditionDescription" Type="Edm.String" sap:label="Condition"/>
+				<Property Name="ConsequenceDescription" Type="Edm.String" sap:label="Consequence"/>
+				<Property Name="Recommendation" Type="Edm.String" sap:label="Recommendation"/>
+				<Property Name="CreatedAt" Type="Edm.DateTimeOffset" Precision="7" sap:label="Created At"/>
+				<Property Name="CreatedBy" Type="Edm.String" MaxLength="12" sap:display-format="UpperCase" sap:label="Created By"/>
+				<Property Name="LastChangedAt" Type="Edm.DateTimeOffset" Precision="7" sap:label="Last Changed At"/>
+				<Property Name="LastChangedBy" Type="Edm.String" MaxLength="12" sap:display-format="UpperCase" sap:label="Last Changed By"/>
+				<Property Name="ActionCount" Type="Edm.Int32" sap:label="Action Plans"/>
+				<Property Name="Type" Type="Edm.String" MaxLength="10" sap:display-format="UpperCase" sap:label="Type"/>
+				<Property Name="TypeText" Type="Edm.String" MaxLength="40" sap:label="Type"/>
+				<Property Name="Category" Type="Edm.String" MaxLength="10" sap:display-format="UpperCase" sap:label="Category"/>
+				<Property Name="CategoryText" Type="Edm.String" MaxLength="40" sap:label="Category"/>
+				<Property Name="Ranking" Type="Edm.String" MaxLength="10" sap:display-format="UpperCase" sap:label="Ranking"/>
+				<Property Name="RankingText" Type="Edm.String" MaxLength="40" sap:label="Ranking"/>
+			</EntityType>
+			<EntityType Name="GRCAUD_CV_OrganizationByAuditType" sap:label="Organization by Audit" sap:content-version="1">
+				<Key>
+					<PropertyRef Name="DBKey"/>
+					<PropertyRef Name="OrgKey"/>
+				</Key>
+				<Property Name="DBKey" Type="Edm.Guid" Nullable="false" sap:label="UUID"/>
+				<Property Name="OrgKey" Type="Edm.Binary" Nullable="false" sap:label="NodeID"/>
+				<Property Name="OrgID" Type="Edm.String" MaxLength="10" sap:label="Organization ID"/>
+				<Property Name="OrgName" Type="Edm.String" MaxLength="100" sap:label="Organization"/>
+				<Property Name="OrgType" Type="Edm.String" MaxLength="6" sap:display-format="UpperCase" sap:label="Organization Type"/>
+				<Property Name="OrgTypeText" Type="Edm.String" MaxLength="100" sap:label="Organization Type"/>
+				<Property Name="OrgGroup" Type="Edm.String" MaxLength="10" sap:display-format="UpperCase" sap:label="Organization Group"/>
+				<Property Name="OrgGroupText" Type="Edm.String" MaxLength="100" sap:label="Organization Group"/>
+				<Property Name="Timestamp" Type="Edm.DateTimeOffset" Precision="0" sap:label="Time Stamp"/>
+			</EntityType>
+			<EntityType Name="GRCAUD_CV_RiskByAuditType" sap:label="Risk By Audit" sap:content-version="1">
+				<Key>
+					<PropertyRef Name="DBKey"/>
+					<PropertyRef Name="RiskKey"/>
+				</Key>
+				<Property Name="DBKey" Type="Edm.Binary" Nullable="false" sap:label="NodeID"/>
+				<Property Name="RiskKey" Type="Edm.Guid" Nullable="false" sap:label="UUID"/>
+				<Property Name="RiskVersionKey" Type="Edm.Guid" sap:label="UUID"/>
+				<Property Name="AuditGroup" Type="Edm.String" MaxLength="10" sap:display-format="UpperCase" sap:label="Group"/>
+				<Property Name="ID" Type="Edm.String" MaxLength="30" sap:label="ID"/>
+				<Property Name="Name" Type="Edm.String" MaxLength="100" sap:label="Name"/>
+				<Property Name="Description" Type="Edm.String" sap:label="Description"/>
+				<Property Name="Source" Type="Edm.String" MaxLength="100" sap:display-format="UpperCase" sap:label="Source"/>
+				<Property Name="SourceURL" Type="Edm.String" MaxLength="480" sap:display-format="UpperCase"/>
+				<Property Name="Status" Type="Edm.String" MaxLength="2" sap:display-format="UpperCase" sap:label="Status Key"/>
+				<Property Name="StatusText" Type="Edm.String" MaxLength="40" sap:label="Status Name"/>
+				<Property Name="ValidFrom" Type="Edm.DateTime" Precision="0" sap:display-format="Date" sap:label="Date"/>
+				<Property Name="ValidTo" Type="Edm.DateTime" Precision="0" sap:display-format="Date" sap:label="Date"/>
+				<Property Name="Validity" Type="Edm.String" MaxLength="17" sap:display-format="UpperCase"/>
+				<Property Name="VersionTag" Type="Edm.String" MaxLength="100" sap:label="Version Tag"/>
+				<Property Name="ViewID" Type="Edm.String" MaxLength="10" sap:display-format="UpperCase" sap:label="View ID"/>
+				<Property Name="ViewName" Type="Edm.String" MaxLength="100" sap:label="Name"/>
+				<Property Name="AssignmentValidFrom" Type="Edm.DateTimeOffset" Precision="0" sap:label="Time Stamp"/>
+				<Property Name="AssignmentValidTo" Type="Edm.DateTimeOffset" Precision="0" sap:label="Time Stamp"/>
+				<Property Name="Removed" Type="Edm.Boolean" sap:display-format="UpperCase" sap:label="TRUE"/>
+				<Property Name="Connector" Type="Edm.String" MaxLength="10" sap:display-format="UpperCase" sap:label="Connector"/>
+				<Property Name="ConnectorText" Type="Edm.String" MaxLength="40" sap:label="Name"/>
+				<Property Name="ConnectorType" Type="Edm.String" MaxLength="10" sap:display-format="UpperCase" sap:label="Connector Type"/>
+				<Property Name="ConnectorTypeText" Type="Edm.String" MaxLength="40" sap:label="Name"/>
+				<Property Name="CreatedAt" Type="Edm.DateTimeOffset" Precision="7" sap:label="Time Stamp"/>
+				<Property Name="CreatedBy" Type="Edm.String" MaxLength="12" sap:display-format="UpperCase" sap:label="User Name"/>
+				<Property Name="CreatedByName" Type="Edm.String" MaxLength="80" sap:label="Full Name"/>
+				<Property Name="LastChangedAt" Type="Edm.DateTimeOffset" Precision="7" sap:label="Time Stamp"/>
+				<Property Name="LastChangedBy" Type="Edm.String" MaxLength="12" sap:display-format="UpperCase" sap:label="User Name"/>
+				<Property Name="LastChangedByName" Type="Edm.String" MaxLength="80" sap:label="Full Name"/>
+				<Property Name="RiskType" Type="Edm.String" MaxLength="10" sap:display-format="UpperCase" sap:label="Risk Type"/>
+				<Property Name="RiskTypeText" Type="Edm.String" MaxLength="40" sap:label="Risk Type"/>
+				<Property Name="ResidualRiskLevel" Type="Edm.String" MaxLength="3" sap:display-format="UpperCase" sap:label="Risk Level"/>
+				<Property Name="ResidualRiskLevelText" Type="Edm.String" MaxLength="40" sap:label="Risk Level(Residual)"/>
+				<Property Name="ResidualRiskLevelSequence" Type="Edm.String" MaxLength="2" sap:display-format="NonNegative" sap:label="Sequence"/>
+				<Property Name="InherentRiskLevel" Type="Edm.String" MaxLength="3" sap:display-format="UpperCase" sap:label="Risk Level"/>
+				<Property Name="InherentRiskLevelText" Type="Edm.String" MaxLength="40" sap:label="Risk Level(Inherent)"/>
+				<Property Name="InherentRiskLevelSequence" Type="Edm.String" MaxLength="2" sap:display-format="NonNegative" sap:label="Sequence"/>
+				<Property Name="Timestamp" Type="Edm.Decimal" Precision="15" Scale="0"/>
+			</EntityType>
+			<EntityType Name="GRCAUD_CV_AssignedScopeHierType" sap:label="Assigned Scope Hierarchy" sap:content-version="1">
+				<Key>
+					<PropertyRef Name="DBKey"/>
+				</Key>
+				<Property Name="DBKey" Type="Edm.Guid" Nullable="false" sap:hierarchy-node-for="DBKey" sap:label="UUID"/>
+				<Property Name="ParentScopeKey" Type="Edm.Guid" sap:hierarchy-parent-node-for="DBKey" sap:label="UUID"/>
+				<Property Name="AuditKey" Type="Edm.Guid" sap:label="UUID"/>
+				<Property Name="AuditGroup" Type="Edm.String" MaxLength="10" sap:display-format="UpperCase" sap:label="Group"/>
+				<Property Name="Name" Type="Edm.String" MaxLength="100" sap:label="Name"/>
+				<Property Name="Code" Type="Edm.String" MaxLength="20" sap:display-format="UpperCase" sap:label="Code"/>
+				<Property Name="Sequence" Type="Edm.String" MaxLength="5" sap:display-format="NonNegative" sap:label="Sequence No."/>
+				<Property Name="Status" Type="Edm.String" MaxLength="2" sap:display-format="UpperCase" sap:label="Status ID"/>
+				<Property Name="Description" Type="Edm.String" sap:label="Description"/>
+				<Property Name="ProcedureCount" Type="Edm.Int32"/>
+				<Property Name="WorkingPaperCount" Type="Edm.Int32"/>
+				<Property Name="ScopeLevel" Type="Edm.Byte" sap:label="Scope Level"/>
+				<Property Name="HierarchyLevel" Type="Edm.Int32" sap:hierarchy-level-for="DBKey"/>
+				<Property Name="DrillState" Type="Edm.String" MaxLength="8" sap:display-format="UpperCase" sap:hierarchy-drill-state-for="DBKey"/>
+				<Property Name="CreatedAt" Type="Edm.DateTimeOffset" Precision="7" sap:label="Time Stamp"/>
+				<Property Name="CreatedBy" Type="Edm.String" MaxLength="12" sap:display-format="UpperCase" sap:label="User Name"/>
+				<Property Name="LastChangedAt" Type="Edm.DateTimeOffset" Precision="7" sap:label="Time Stamp"/>
+				<Property Name="LastChangedBy" Type="Edm.String" MaxLength="12" sap:display-format="UpperCase" sap:label="User Name"/>
+				<NavigationProperty Name="to_ResponsiblePerson" Relationship="GRCAUD_AUDIT_SRV.assoc_C4473C177A31D44C5B8A6AEE01CE1234"
+					FromRole="FromRole_assoc_C4473C177A31D44C5B8A6AEE01CE1234" ToRole="ToRole_assoc_C4473C177A31D44C5B8A6AEE01CE1234"/>
+			</EntityType>
+			<EntityType Name="GRCAUD_CV_UserRoleByScopeType" sap:label="User Role Assignment in Scope" sap:content-version="1">
+				<Key>
+					<PropertyRef Name="DBKey"/>
+					<PropertyRef Name="ScopeKey"/>
+				</Key>
+				<Property Name="DBKey" Type="Edm.Guid" Nullable="false" sap:label="UUID"/>
+				<Property Name="ScopeKey" Type="Edm.Guid" Nullable="false" sap:label="UUID"/>
+				<Property Name="AuditGroup" Type="Edm.String" MaxLength="10" sap:display-format="UpperCase" sap:label="Group"/>
+				<Property Name="RoleID" Type="Edm.String" MaxLength="10" sap:display-format="UpperCase" sap:label="Role"/>
+				<Property Name="UserID" Type="Edm.String" MaxLength="50" sap:label="User ID"/>
+				<Property Name="userSequence" Type="Edm.String" MaxLength="2" sap:display-format="NonNegative" sap:label="Role Sequence"/>
+				<Property Name="StartDate" Type="Edm.DateTime" Precision="0" sap:display-format="Date" sap:label="Date"/>
+				<Property Name="EndDate" Type="Edm.DateTime" Precision="0" sap:display-format="Date" sap:label="Date"/>
+				<Property Name="FullName" Type="Edm.String" MaxLength="80" sap:display-format="UpperCase"/>
+				<Property Name="Email" Type="Edm.String" MaxLength="241" sap:label="E-Mail Address"/>
+				<Property Name="Telephone" Type="Edm.String" MaxLength="30" sap:display-format="UpperCase" sap:label="Telephone number"/>
+			</EntityType>
+			<EntityType Name="GRCAUD_EV_AuditExtensionType" sap:label="Audit Extension" sap:content-version="1">
+				<Key>
+					<PropertyRef Name="DBKey"/>
+				</Key>
+				<Property Name="DBKey" Type="Edm.Guid" Nullable="false" sap:label="UUID" sap:creatable="false" sap:updatable="false"/>
+			</EntityType>
+			<EntityType Name="GRCAUD_IV_AuditCategoryType" sap:label="Audit Category" sap:content-version="1">
+				<Key>
+					<PropertyRef Name="AuditCategory"/>
+				</Key>
+				<Property Name="AuditCategory" Type="Edm.String" Nullable="false" MaxLength="10" sap:display-format="UpperCase" sap:label="Category"/>
+				<Property Name="AuditCategoryText" Type="Edm.String" MaxLength="40" sap:label="Description"/>
+			</EntityType>
+			<EntityType Name="GRCAUD_IV_AuditGroupType" sap:label="Audit Group" sap:content-version="1">
+				<Key>
+					<PropertyRef Name="AuditGroup"/>
+				</Key>
+				<Property Name="AuditGroup" Type="Edm.String" Nullable="false" MaxLength="10" sap:display-format="UpperCase" sap:label="Group"/>
+				<Property Name="AuditGroupText" Type="Edm.String" MaxLength="40" sap:label="Description"/>
+			</EntityType>
+			<EntityType Name="GRCAUD_IV_AuditScopeSchemaType" sap:label="Audit Scope Schema" sap:content-version="1">
+				<Key>
+					<PropertyRef Name="ScopeSchema"/>
+				</Key>
+				<Property Name="ScopeSchema" Type="Edm.String" Nullable="false" MaxLength="10" sap:display-format="UpperCase" sap:label="Scope Schema"/>
+				<Property Name="ScopeSchemaText" Type="Edm.String" MaxLength="40" sap:label="Title"/>
+				<NavigationProperty Name="to_ScopeSchemaLevel" Relationship="GRCAUD_AUDIT_SRV.assoc_F7A415110F0D348DA4FE6A4232055371"
+					FromRole="FromRole_assoc_F7A415110F0D348DA4FE6A4232055371" ToRole="ToRole_assoc_F7A415110F0D348DA4FE6A4232055371"/>
+			</EntityType>
+			<EntityType Name="GRCAUD_IV_AuditStatusType" sap:label="Audit Status" sap:content-version="1">
+				<Key>
+					<PropertyRef Name="AuditStatus"/>
+					<PropertyRef Name="AuditObjectType"/>
+				</Key>
+				<Property Name="AuditStatus" Type="Edm.String" Nullable="false" MaxLength="2" sap:display-format="UpperCase" sap:label="Status Key"/>
+				<Property Name="AuditObjectType" Type="Edm.String" Nullable="false" MaxLength="6" sap:display-format="UpperCase" sap:label="Business Object"/>
+				<Property Name="AuditStatusText" Type="Edm.String" MaxLength="40" sap:label="Status Name"/>
+			</EntityType>
+			<EntityType Name="GRCAUD_IV_AuditTypeType" sap:label="Audit Type" sap:content-version="1">
+				<Key>
+					<PropertyRef Name="AuditType"/>
+				</Key>
+				<Property Name="AuditType" Type="Edm.String" Nullable="false" MaxLength="10" sap:display-format="UpperCase" sap:label="Audit Type"/>
+				<Property Name="AuditTypeText" Type="Edm.String" MaxLength="100" sap:label="Name"/>
+				<Property Name="RisksFromRR" Type="Edm.Boolean" sap:display-format="UpperCase" sap:label="Risk Register"/>
+				<Property Name="DimsFromRR" Type="Edm.Boolean" sap:display-format="UpperCase" sap:label="Dimension Assgn"/>
+			</EntityType>
+			<EntityType Name="GRCAUD_IV_ScopeSchemaLevelType" sap:label="Audit Scope Schema Level" sap:content-version="1">
+				<Key>
+					<PropertyRef Name="ScopeSchema"/>
+					<PropertyRef Name="ScopeSchemaLevel"/>
+				</Key>
+				<Property Name="ScopeSchema" Type="Edm.String" Nullable="false" MaxLength="10" sap:display-format="UpperCase" sap:label="Scope Schema"/>
+				<Property Name="ScopeSchemaLevel" Type="Edm.Byte" Nullable="false" sap:label="Scope Level"/>
+				<Property Name="ScopeSchemaLevelText" Type="Edm.String" MaxLength="40" sap:label="Title"/>
+			</EntityType>
+			<EntityType Name="GRCAUD_IV_TagType" sap:label="Tag" sap:content-version="1">
+				<Key>
+					<PropertyRef Name="TagKey"/>
+				</Key>
+				<Property Name="TagKey" Type="Edm.Guid" Nullable="false" sap:label="UUID"/>
+				<Property Name="TagName" Type="Edm.String" MaxLength="20" sap:display-format="UpperCase" sap:label="Tag"/>
+				<Property Name="HostBOKey" Type="Edm.Guid" sap:label="UUID"/>
+				<Property Name="HostNodeKey" Type="Edm.Guid" sap:label="UUID"/>
+				<Property Name="HostKey" Type="Edm.Guid" sap:label="UUID"/>
+			</EntityType>
+			<EntityType Name="GRCAUD_IV_UserInformationType" sap:label="User Information" sap:content-version="1">
+				<Key>
+					<PropertyRef Name="UserID"/>
+				</Key>
+				<Property Name="UserID" Type="Edm.String" Nullable="false" MaxLength="12" sap:display-format="UpperCase" sap:label="User"/>
+				<Property Name="FullName" Type="Edm.String" MaxLength="80" sap:label="Full Name"/>
+				<Property Name="Department" Type="Edm.String" MaxLength="40" sap:label="Department"/>
+				<Property Name="Building" Type="Edm.String" MaxLength="10" sap:label="Building code"/>
+				<Property Name="RoomNumber" Type="Edm.String" MaxLength="10" sap:label="Room Number"/>
+				<Property Name="Floor" Type="Edm.String" MaxLength="10" sap:label="Floor"/>
+				<Property Name="Telephone" Type="Edm.String" MaxLength="30" sap:display-format="UpperCase" sap:label="Telephone number"/>
+				<Property Name="Email" Type="Edm.String" MaxLength="241" sap:label="E-Mail Address"/>
+				<Property Name="UserType" Type="Edm.String" MaxLength="1" sap:label="User Type"/>
+				<Property Name="UserPhotoURL" Type="Edm.String" MaxLength="255" sap:display-format="UpperCase" sap:label="Photo URL" sap:creatable="false"
+					sap:updatable="false"/>
+			</EntityType>
+			<EntityType Name="GRCAUD_IV_UserRoleType" sap:label="User Role Assignment" sap:content-version="1">
+				<Key>
+					<PropertyRef Name="HostKey"/>
+					<PropertyRef Name="DBKey"/>
+					<PropertyRef Name="HostBOKey"/>
+					<PropertyRef Name="HostNodeKey"/>
+				</Key>
+				<Property Name="HostKey" Type="Edm.Guid" Nullable="false" sap:label="UUID"/>
+				<Property Name="DBKey" Type="Edm.Guid" Nullable="false" sap:label="UUID"/>
+				<Property Name="HostBOKey" Type="Edm.Guid" Nullable="false" sap:label="UUID"/>
+				<Property Name="HostNodeKey" Type="Edm.Guid" Nullable="false" sap:label="UUID"/>
+				<Property Name="RoleID" Type="Edm.String" MaxLength="10" sap:display-format="UpperCase" sap:label="Role"/>
+				<Property Name="RoleText" Type="Edm.String" MaxLength="100" sap:display-format="UpperCase"/>
+				<Property Name="UserID" Type="Edm.String" MaxLength="50" sap:label="User ID"/>
+				<Property Name="userSequence" Type="Edm.String" MaxLength="2" sap:display-format="NonNegative" sap:label="Role Sequence"/>
+				<Property Name="StartDate" Type="Edm.DateTime" Precision="0" sap:display-format="Date" sap:label="Date"/>
+				<Property Name="EndDate" Type="Edm.DateTime" Precision="0" sap:display-format="Date" sap:label="Date"/>
+				<Property Name="FullName" Type="Edm.String" MaxLength="80" sap:display-format="UpperCase"/>
+				<Property Name="Email" Type="Edm.String" MaxLength="241" sap:label="E-Mail Address"/>
+				<Property Name="Telephone" Type="Edm.String" MaxLength="30" sap:display-format="UpperCase" sap:label="Telephone number"/>
+				<Property Name="HostBOKeyHex" Type="Edm.String" MaxLength="32" sap:display-format="UpperCase"/>
+				<Property Name="HostNodeKeyHex" Type="Edm.String" MaxLength="32" sap:display-format="UpperCase"/>
+			</EntityType>
+			<EntityType Name="GRCAUD_CV_AuditType" sap:label="Audit" sap:content-version="1">
+				<Key>
+					<PropertyRef Name="DBKey"/>
+				</Key>
+				<Property Name="DBKey" Type="Edm.Guid" Nullable="false" sap:label="UUID" sap:creatable="false" sap:updatable="false"/>
+				<Property Name="AuditKey" Type="Edm.Guid" sap:label="UUID"/>
+				<Property Name="ID" Type="Edm.String" MaxLength="30" sap:label="ID"/>
+				<Property Name="Code" Type="Edm.String" MaxLength="20" sap:display-format="UpperCase" sap:label="Code"/>
+				<Property Name="Title" Type="Edm.String" MaxLength="100" sap:label="Title"/>
+				<Property Name="Status" Type="Edm.String" MaxLength="2" sap:display-format="UpperCase" sap:text="StatusText" sap:label="Status Key"
+					sap:value-list="standard"/>
+				<Property Name="Type" Type="Edm.String" MaxLength="10" sap:display-format="UpperCase" sap:text="TypeText" sap:label="Audit Type"
+					sap:value-list="standard"/>
+				<Property Name="Scope" Type="Edm.String" sap:label="Audit Scope"/>
+				<Property Name="AuditGroup" Type="Edm.String" MaxLength="10" sap:display-format="UpperCase" sap:text="AuditGroupText" sap:label="Group"
+					sap:value-list="standard"/>
+				<Property Name="Country" Type="Edm.String" MaxLength="3" sap:display-format="UpperCase" sap:label="Country/Region"/>
+				<Property Name="Category" Type="Edm.String" MaxLength="10" sap:display-format="UpperCase" sap:text="CategoryText" sap:label="Category"
+					sap:value-list="standard"/>
+				<Property Name="Company" Type="Edm.String" MaxLength="4" sap:display-format="UpperCase" sap:label="Company Code"/>
+				<Property Name="EsitmatedEffort" Type="Edm.Decimal" Precision="10" Scale="2" sap:label="Estimated Effort"/>
+				<Property Name="ActualEffort" Type="Edm.Decimal" Precision="10" Scale="2" sap:label="Actual Effort"/>
+				<Property Name="EstimatedCost" Type="Edm.Decimal" Precision="32" Scale="3" sap:unit="Currency" sap:label="Estimated Cost"/>
+				<Property Name="Actualcost" Type="Edm.Decimal" Precision="32" Scale="3" sap:unit="Currency" sap:label="Actual Cost"/>
+				<Property Name="Currency" Type="Edm.String" MaxLength="5" sap:label="Currency" sap:semantics="currency-code"/>
+				<Property Name="OrderNumber" Type="Edm.String" MaxLength="12" sap:display-format="UpperCase" sap:label="Internal Order"/>
+				<Property Name="PeriodStartDate" Type="Edm.DateTime" Precision="0" sap:display-format="Date" sap:label="Period Start Date"/>
+				<Property Name="PeriodEndDate" Type="Edm.DateTime" Precision="0" sap:display-format="Date" sap:label="Period End Date"/>
+				<Property Name="ScopeSchema" Type="Edm.String" MaxLength="10" sap:display-format="UpperCase" sap:label="Scope Schema"/>
+				<Property Name="StatusSchema" Type="Edm.String" MaxLength="10" sap:display-format="UpperCase" sap:label="Status Schema"/>
+				<Property Name="FindingStatusSchema" Type="Edm.String" MaxLength="10" sap:display-format="UpperCase" sap:label="Finding Status Schema"/>
+				<Property Name="ActionStatusSchema" Type="Edm.String" MaxLength="10" sap:display-format="UpperCase" sap:label="Action Status Schema"/>
+				<Property Name="DetectionTaskStatusSchema" Type="Edm.String" MaxLength="10" sap:display-format="UpperCase"
+					sap:label="Detection Status Schema"/>
+				<Property Name="ManualTaskStatusSchema" Type="Edm.String" MaxLength="10" sap:display-format="UpperCase" sap:label="Test Status Schema"/>
+				<Property Name="CostAssignmentType" Type="Edm.String" MaxLength="2" sap:display-format="UpperCase" sap:label="Cost Assignment Type"/>
+				<Property Name="PlannedStartDate" Type="Edm.DateTime" Precision="0" sap:display-format="Date" sap:label="Planned Start Date"/>
+				<Property Name="PlannedEndDate" Type="Edm.DateTime" Precision="0" sap:display-format="Date" sap:label="Planned End Date"/>
+				<Property Name="ActualStartDate" Type="Edm.DateTime" Precision="0" sap:display-format="Date" sap:label="Actual Start Date"/>
+				<Property Name="ActualEndDate" Type="Edm.DateTime" Precision="0" sap:display-format="Date" sap:label="Actual End Date"/>
+				<Property Name="CreatedAt" Type="Edm.DateTimeOffset" Precision="7" sap:label="Created At"/>
+				<Property Name="CreatedBy" Type="Edm.String" MaxLength="12" sap:display-format="UpperCase" sap:label="Created By"/>
+				<Property Name="LastChangedAt" Type="Edm.DateTimeOffset" Precision="7" sap:label="Last Changed At"/>
+				<Property Name="LastChangedBy" Type="Edm.String" MaxLength="12" sap:display-format="UpperCase" sap:label="Last Changed By"/>
+				<Property Name="TypeText" Type="Edm.String" MaxLength="100" sap:label="Type"/>
+				<Property Name="CategoryText" Type="Edm.String" MaxLength="40" sap:label="Category"/>
+				<Property Name="StatusText" Type="Edm.String" MaxLength="40" sap:label="Status"/>
+				<Property Name="AuditGroupText" Type="Edm.String" MaxLength="40" sap:label="Audit Group"/>
+				<Property Name="AuditManager" Type="Edm.String" MaxLength="50" sap:text="AuditManagerName" sap:label="User ID" sap:value-list="standard"/>
+				<Property Name="AuditManagerName" Type="Edm.String" MaxLength="80" sap:display-format="UpperCase" sap:label="Audit Manager"/>
+				<Property Name="AuditLead" Type="Edm.String" MaxLength="50" sap:text="AuditLeadName" sap:label="User ID" sap:value-list="standard"/>
+				<Property Name="AuditLeadName" Type="Edm.String" MaxLength="80" sap:display-format="UpperCase" sap:label="Audit Lead"/>
+				<NavigationProperty Name="to_ActivityHistories" Relationship="GRCAUD_AUDIT_SRV.assoc_FD67CF739285C9DF8AB66F8B3C71FF38"
+					FromRole="FromRole_assoc_FD67CF739285C9DF8AB66F8B3C71FF38" ToRole="ToRole_assoc_FD67CF739285C9DF8AB66F8B3C71FF38"/>
+				<NavigationProperty Name="to_AuditableItems" Relationship="GRCAUD_AUDIT_SRV.assoc_CF6167F489EBA7292A7300585B0DC265"
+					FromRole="FromRole_assoc_CF6167F489EBA7292A7300585B0DC265" ToRole="ToRole_assoc_CF6167F489EBA7292A7300585B0DC265"/>
+				<NavigationProperty Name="to_AuditCategory" Relationship="GRCAUD_AUDIT_SRV.assoc_168D8D4656FBA4857EEDD432BB766F39"
+					FromRole="FromRole_assoc_168D8D4656FBA4857EEDD432BB766F39" ToRole="ToRole_assoc_168D8D4656FBA4857EEDD432BB766F39"/>
+				<NavigationProperty Name="to_AuditGroup" Relationship="GRCAUD_AUDIT_SRV.assoc_FB8F45CC9AE5250BB3BC832B5BC12415"
+					FromRole="FromRole_assoc_FB8F45CC9AE5250BB3BC832B5BC12415" ToRole="ToRole_assoc_FB8F45CC9AE5250BB3BC832B5BC12415"/>
+				<NavigationProperty Name="to_AuditLead" Relationship="GRCAUD_AUDIT_SRV.assoc_1831BD4D7DC86A57F282ACEED158E182"
+					FromRole="FromRole_assoc_1831BD4D7DC86A57F282ACEED158E182" ToRole="ToRole_assoc_1831BD4D7DC86A57F282ACEED158E182"/>
+				<NavigationProperty Name="to_AuditManager" Relationship="GRCAUD_AUDIT_SRV.assoc_51E50907FD2E2857491AC8D8CCFEFF47"
+					FromRole="FromRole_assoc_51E50907FD2E2857491AC8D8CCFEFF47" ToRole="ToRole_assoc_51E50907FD2E2857491AC8D8CCFEFF47"/>
+				<NavigationProperty Name="to_Auditor" Relationship="GRCAUD_AUDIT_SRV.assoc_216F2CCDD5F4896E5C84CAE0130A0726"
+					FromRole="FromRole_assoc_216F2CCDD5F4896E5C84CAE0130A0726" ToRole="ToRole_assoc_216F2CCDD5F4896E5C84CAE0130A0726"/>
+				<NavigationProperty Name="to_AuditStatus" Relationship="GRCAUD_AUDIT_SRV.assoc_1A6E1FCA329B04252A1AA505F7B36385"
+					FromRole="FromRole_assoc_1A6E1FCA329B04252A1AA505F7B36385" ToRole="ToRole_assoc_1A6E1FCA329B04252A1AA505F7B36385"/>
+				<NavigationProperty Name="to_AuditType" Relationship="GRCAUD_AUDIT_SRV.assoc_276BF88BF7772E850C4B85DEB5C0DE8B"
+					FromRole="FromRole_assoc_276BF88BF7772E850C4B85DEB5C0DE8B" ToRole="ToRole_assoc_276BF88BF7772E850C4B85DEB5C0DE8B"/>
+				<NavigationProperty Name="to_CAE" Relationship="GRCAUD_AUDIT_SRV.assoc_D0D788F8378F16808FC082CF589D9C3B"
+					FromRole="FromRole_assoc_D0D788F8378F16808FC082CF589D9C3B" ToRole="ToRole_assoc_D0D788F8378F16808FC082CF589D9C3B"/>
+				<NavigationProperty Name="to_Count" Relationship="GRCAUD_AUDIT_SRV.assoc_CC32FA465BE112F2565AE72E8B3594EF"
+					FromRole="FromRole_assoc_CC32FA465BE112F2565AE72E8B3594EF" ToRole="ToRole_assoc_CC32FA465BE112F2565AE72E8B3594EF"/>
+				<NavigationProperty Name="to_Dimensions" Relationship="GRCAUD_AUDIT_SRV.assoc_DD1F0947E10EBFE43E037F52925090DF"
+					FromRole="FromRole_assoc_DD1F0947E10EBFE43E037F52925090DF" ToRole="ToRole_assoc_DD1F0947E10EBFE43E037F52925090DF"/>
+				<NavigationProperty Name="to_ExecutiveResponsible" Relationship="GRCAUD_AUDIT_SRV.assoc_249B08D726A623E61F67EAFA47D350AC"
+					FromRole="FromRole_assoc_249B08D726A623E61F67EAFA47D350AC" ToRole="ToRole_assoc_249B08D726A623E61F67EAFA47D350AC"/>
+				<NavigationProperty Name="to_Extension" Relationship="GRCAUD_AUDIT_SRV.assoc_8EAFF50DE32C2911A3BA32F2F908065F"
+					FromRole="FromRole_assoc_8EAFF50DE32C2911A3BA32F2F908065F" ToRole="ToRole_assoc_8EAFF50DE32C2911A3BA32F2F908065F"/>
+				<NavigationProperty Name="to_Findings" Relationship="GRCAUD_AUDIT_SRV.assoc_5546C8031ECEA3DF59CEA9290C26B543"
+					FromRole="FromRole_assoc_5546C8031ECEA3DF59CEA9290C26B543" ToRole="ToRole_assoc_5546C8031ECEA3DF59CEA9290C26B543"/>
+				<NavigationProperty Name="to_Organizations" Relationship="GRCAUD_AUDIT_SRV.assoc_ABA8402926C0193C3D295FFB2BC47906"
+					FromRole="FromRole_assoc_ABA8402926C0193C3D295FFB2BC47906" ToRole="ToRole_assoc_ABA8402926C0193C3D295FFB2BC47906"/>
+				<NavigationProperty Name="to_Risks" Relationship="GRCAUD_AUDIT_SRV.assoc_35F27F87B9399271BF238C9AC569BD10"
+					FromRole="FromRole_assoc_35F27F87B9399271BF238C9AC569BD10" ToRole="ToRole_assoc_35F27F87B9399271BF238C9AC569BD10"/>
+				<NavigationProperty Name="to_Scopes" Relationship="GRCAUD_AUDIT_SRV.assoc_611BFF43E81BFE84D5868338A12B5BF0"
+					FromRole="FromRole_assoc_611BFF43E81BFE84D5868338A12B5BF0" ToRole="ToRole_assoc_611BFF43E81BFE84D5868338A12B5BF0"/>
+				<NavigationProperty Name="to_ScopeSchema" Relationship="GRCAUD_AUDIT_SRV.assoc_E935EACCB7D2AF7B9EB4C4FE3779514E"
+					FromRole="FromRole_assoc_E935EACCB7D2AF7B9EB4C4FE3779514E" ToRole="ToRole_assoc_E935EACCB7D2AF7B9EB4C4FE3779514E"/>
+				<NavigationProperty Name="to_Tags" Relationship="GRCAUD_AUDIT_SRV.assoc_85D9EA933BFE8CCA8B67E6FF3D77B0C9"
+					FromRole="FromRole_assoc_85D9EA933BFE8CCA8B67E6FF3D77B0C9" ToRole="ToRole_assoc_85D9EA933BFE8CCA8B67E6FF3D77B0C9"/>
+			</EntityType>
+			<Association Name="assoc_FD67CF739285C9DF8AB66F8B3C71FF38" sap:content-version="1">
+				<End Type="GRCAUD_AUDIT_SRV.GRCAUD_CV_AuditType" Multiplicity="1" Role="FromRole_assoc_FD67CF739285C9DF8AB66F8B3C71FF38"/>
+				<End Type="GRCAUD_AUDIT_SRV.GRCAUD_CV_AuditActivityHistoryType" Multiplicity="*" Role="ToRole_assoc_FD67CF739285C9DF8AB66F8B3C71FF38"/>
+			</Association>
+			<Association Name="assoc_CF6167F489EBA7292A7300585B0DC265" sap:content-version="1">
+				<End Type="GRCAUD_AUDIT_SRV.GRCAUD_CV_AuditType" Multiplicity="1" Role="FromRole_assoc_CF6167F489EBA7292A7300585B0DC265"/>
+				<End Type="GRCAUD_AUDIT_SRV.GRCAUD_CV_AdtblByAuditType" Multiplicity="*" Role="ToRole_assoc_CF6167F489EBA7292A7300585B0DC265"/>
+			</Association>
+			<Association Name="assoc_168D8D4656FBA4857EEDD432BB766F39" sap:content-version="1">
+				<End Type="GRCAUD_AUDIT_SRV.GRCAUD_CV_AuditType" Multiplicity="1" Role="FromRole_assoc_168D8D4656FBA4857EEDD432BB766F39"/>
+				<End Type="GRCAUD_AUDIT_SRV.GRCAUD_IV_AuditCategoryType" Multiplicity="1" Role="ToRole_assoc_168D8D4656FBA4857EEDD432BB766F39"/>
+			</Association>
+			<Association Name="assoc_FB8F45CC9AE5250BB3BC832B5BC12415" sap:content-version="1">
+				<End Type="GRCAUD_AUDIT_SRV.GRCAUD_CV_AuditType" Multiplicity="1" Role="FromRole_assoc_FB8F45CC9AE5250BB3BC832B5BC12415"/>
+				<End Type="GRCAUD_AUDIT_SRV.GRCAUD_IV_AuditGroupType" Multiplicity="1" Role="ToRole_assoc_FB8F45CC9AE5250BB3BC832B5BC12415"/>
+			</Association>
+			<Association Name="assoc_1831BD4D7DC86A57F282ACEED158E182" sap:content-version="1">
+				<End Type="GRCAUD_AUDIT_SRV.GRCAUD_CV_AuditType" Multiplicity="1" Role="FromRole_assoc_1831BD4D7DC86A57F282ACEED158E182"/>
+				<End Type="GRCAUD_AUDIT_SRV.GRCAUD_IV_UserRoleType" Multiplicity="1" Role="ToRole_assoc_1831BD4D7DC86A57F282ACEED158E182"/>
+			</Association>
+			<Association Name="assoc_51E50907FD2E2857491AC8D8CCFEFF47" sap:content-version="1">
+				<End Type="GRCAUD_AUDIT_SRV.GRCAUD_CV_AuditType" Multiplicity="1" Role="FromRole_assoc_51E50907FD2E2857491AC8D8CCFEFF47"/>
+				<End Type="GRCAUD_AUDIT_SRV.GRCAUD_IV_UserRoleType" Multiplicity="1" Role="ToRole_assoc_51E50907FD2E2857491AC8D8CCFEFF47"/>
+			</Association>
+			<Association Name="assoc_216F2CCDD5F4896E5C84CAE0130A0726" sap:content-version="1">
+				<End Type="GRCAUD_AUDIT_SRV.GRCAUD_CV_AuditType" Multiplicity="1" Role="FromRole_assoc_216F2CCDD5F4896E5C84CAE0130A0726"/>
+				<End Type="GRCAUD_AUDIT_SRV.GRCAUD_IV_UserRoleType" Multiplicity="*" Role="ToRole_assoc_216F2CCDD5F4896E5C84CAE0130A0726"/>
+			</Association>
+			<Association Name="assoc_1A6E1FCA329B04252A1AA505F7B36385" sap:content-version="1">
+				<End Type="GRCAUD_AUDIT_SRV.GRCAUD_CV_AuditType" Multiplicity="1" Role="FromRole_assoc_1A6E1FCA329B04252A1AA505F7B36385"/>
+				<End Type="GRCAUD_AUDIT_SRV.GRCAUD_IV_AuditStatusType" Multiplicity="1" Role="ToRole_assoc_1A6E1FCA329B04252A1AA505F7B36385"/>
+			</Association>
+			<Association Name="assoc_276BF88BF7772E850C4B85DEB5C0DE8B" sap:content-version="1">
+				<End Type="GRCAUD_AUDIT_SRV.GRCAUD_CV_AuditType" Multiplicity="1" Role="FromRole_assoc_276BF88BF7772E850C4B85DEB5C0DE8B"/>
+				<End Type="GRCAUD_AUDIT_SRV.GRCAUD_IV_AuditTypeType" Multiplicity="1" Role="ToRole_assoc_276BF88BF7772E850C4B85DEB5C0DE8B"/>
+			</Association>
+			<Association Name="assoc_D0D788F8378F16808FC082CF589D9C3B" sap:content-version="1">
+				<End Type="GRCAUD_AUDIT_SRV.GRCAUD_CV_AuditType" Multiplicity="1" Role="FromRole_assoc_D0D788F8378F16808FC082CF589D9C3B"/>
+				<End Type="GRCAUD_AUDIT_SRV.GRCAUD_IV_UserRoleType" Multiplicity="1" Role="ToRole_assoc_D0D788F8378F16808FC082CF589D9C3B"/>
+			</Association>
+			<Association Name="assoc_CC32FA465BE112F2565AE72E8B3594EF" sap:content-version="1">
+				<End Type="GRCAUD_AUDIT_SRV.GRCAUD_CV_AuditType" Multiplicity="1" Role="FromRole_assoc_CC32FA465BE112F2565AE72E8B3594EF"/>
+				<End Type="GRCAUD_AUDIT_SRV.GRCAUD_CV_AuditCountType" Multiplicity="*" Role="ToRole_assoc_CC32FA465BE112F2565AE72E8B3594EF"/>
+			</Association>
+			<Association Name="assoc_DD1F0947E10EBFE43E037F52925090DF" sap:content-version="1">
+				<End Type="GRCAUD_AUDIT_SRV.GRCAUD_CV_AuditType" Multiplicity="1" Role="FromRole_assoc_DD1F0947E10EBFE43E037F52925090DF"/>
+				<End Type="GRCAUD_AUDIT_SRV.GRCAUD_CV_DimensionByAuditType" Multiplicity="*" Role="ToRole_assoc_DD1F0947E10EBFE43E037F52925090DF"/>
+			</Association>
+			<Association Name="assoc_249B08D726A623E61F67EAFA47D350AC" sap:content-version="1">
+				<End Type="GRCAUD_AUDIT_SRV.GRCAUD_CV_AuditType" Multiplicity="1" Role="FromRole_assoc_249B08D726A623E61F67EAFA47D350AC"/>
+				<End Type="GRCAUD_AUDIT_SRV.GRCAUD_IV_UserRoleType" Multiplicity="*" Role="ToRole_assoc_249B08D726A623E61F67EAFA47D350AC"/>
+			</Association>
+			<Association Name="assoc_8EAFF50DE32C2911A3BA32F2F908065F" sap:content-version="1">
+				<End Type="GRCAUD_AUDIT_SRV.GRCAUD_CV_AuditType" Multiplicity="1" Role="FromRole_assoc_8EAFF50DE32C2911A3BA32F2F908065F"/>
+				<End Type="GRCAUD_AUDIT_SRV.GRCAUD_EV_AuditExtensionType" Multiplicity="*" Role="ToRole_assoc_8EAFF50DE32C2911A3BA32F2F908065F"/>
+			</Association>
+			<Association Name="assoc_5546C8031ECEA3DF59CEA9290C26B543" sap:content-version="1">
+				<End Type="GRCAUD_AUDIT_SRV.GRCAUD_CV_AuditType" Multiplicity="1" Role="FromRole_assoc_5546C8031ECEA3DF59CEA9290C26B543"/>
+				<End Type="GRCAUD_AUDIT_SRV.GRCAUD_CV_FindingType" Multiplicity="*" Role="ToRole_assoc_5546C8031ECEA3DF59CEA9290C26B543"/>
+			</Association>
+			<Association Name="assoc_ABA8402926C0193C3D295FFB2BC47906" sap:content-version="1">
+				<End Type="GRCAUD_AUDIT_SRV.GRCAUD_CV_AuditType" Multiplicity="1" Role="FromRole_assoc_ABA8402926C0193C3D295FFB2BC47906"/>
+				<End Type="GRCAUD_AUDIT_SRV.GRCAUD_CV_OrganizationByAuditType" Multiplicity="*" Role="ToRole_assoc_ABA8402926C0193C3D295FFB2BC47906"/>
+			</Association>
+			<Association Name="assoc_35F27F87B9399271BF238C9AC569BD10" sap:content-version="1">
+				<End Type="GRCAUD_AUDIT_SRV.GRCAUD_CV_AuditType" Multiplicity="1" Role="FromRole_assoc_35F27F87B9399271BF238C9AC569BD10"/>
+				<End Type="GRCAUD_AUDIT_SRV.GRCAUD_CV_RiskByAuditType" Multiplicity="*" Role="ToRole_assoc_35F27F87B9399271BF238C9AC569BD10"/>
+			</Association>
+			<Association Name="assoc_611BFF43E81BFE84D5868338A12B5BF0" sap:content-version="1">
+				<End Type="GRCAUD_AUDIT_SRV.GRCAUD_CV_AuditType" Multiplicity="1" Role="FromRole_assoc_611BFF43E81BFE84D5868338A12B5BF0"/>
+				<End Type="GRCAUD_AUDIT_SRV.GRCAUD_CV_AssignedScopeHierType" Multiplicity="*" Role="ToRole_assoc_611BFF43E81BFE84D5868338A12B5BF0"/>
+			</Association>
+			<Association Name="assoc_E935EACCB7D2AF7B9EB4C4FE3779514E" sap:content-version="1">
+				<End Type="GRCAUD_AUDIT_SRV.GRCAUD_CV_AuditType" Multiplicity="1" Role="FromRole_assoc_E935EACCB7D2AF7B9EB4C4FE3779514E"/>
+				<End Type="GRCAUD_AUDIT_SRV.GRCAUD_IV_AuditScopeSchemaType" Multiplicity="1" Role="ToRole_assoc_E935EACCB7D2AF7B9EB4C4FE3779514E"/>
+			</Association>
+			<Association Name="assoc_85D9EA933BFE8CCA8B67E6FF3D77B0C9" sap:content-version="1">
+				<End Type="GRCAUD_AUDIT_SRV.GRCAUD_CV_AuditType" Multiplicity="1" Role="FromRole_assoc_85D9EA933BFE8CCA8B67E6FF3D77B0C9"/>
+				<End Type="GRCAUD_AUDIT_SRV.GRCAUD_IV_TagType" Multiplicity="*" Role="ToRole_assoc_85D9EA933BFE8CCA8B67E6FF3D77B0C9"/>
+			</Association>
+			<Association Name="assoc_C4473C177A31D44C5B8A6AEE01CE1234" sap:content-version="1">
+				<End Type="GRCAUD_AUDIT_SRV.GRCAUD_CV_AssignedScopeHierType" Multiplicity="1" Role="FromRole_assoc_C4473C177A31D44C5B8A6AEE01CE1234"/>
+				<End Type="GRCAUD_AUDIT_SRV.GRCAUD_CV_UserRoleByScopeType" Multiplicity="*" Role="ToRole_assoc_C4473C177A31D44C5B8A6AEE01CE1234"/>
+			</Association>
+			<Association Name="assoc_E87F789C38450E86058C51A9BA18134F" sap:content-version="1">
+				<End Type="GRCAUD_AUDIT_SRV.GRCAUD_CV_AuditActivityHistoryType" Multiplicity="1" Role="FromRole_assoc_E87F789C38450E86058C51A9BA18134F"/>
+				<End Type="GRCAUD_AUDIT_SRV.FRA_IV_UserInformationType" Multiplicity="0..1" Role="ToRole_assoc_E87F789C38450E86058C51A9BA18134F"/>
+			</Association>
+			<Association Name="assoc_4B970C212BFF0C5051FCE08769D84024" sap:content-version="1">
+				<End Type="GRCAUD_AUDIT_SRV.GRCAUD_CV_AuditActivityHistoryType" Multiplicity="1" Role="FromRole_assoc_4B970C212BFF0C5051FCE08769D84024"/>
+				<End Type="GRCAUD_AUDIT_SRV.GRCAUD_IV_UserInformationType" Multiplicity="0..1" Role="ToRole_assoc_4B970C212BFF0C5051FCE08769D84024"/>
+			</Association>
+			<Association Name="assoc_716283DFA2E2B9962FF1CBD2E68998DB" sap:content-version="1">
+				<End Type="GRCAUD_AUDIT_SRV.GRCAUD_CV_AuditActivityHistoryType" Multiplicity="1" Role="FromRole_assoc_716283DFA2E2B9962FF1CBD2E68998DB"/>
+				<End Type="GRCAUD_AUDIT_SRV.GRCAUD_CV_ChangeDocForUserRoleType" Multiplicity="*" Role="ToRole_assoc_716283DFA2E2B9962FF1CBD2E68998DB"/>
+			</Association>
+			<Association Name="assoc_F73BE3A97AC0818AA44D4240384F7EEA" sap:content-version="1">
+				<End Type="GRCAUD_AUDIT_SRV.GRCAUD_CV_AuditActivityHistoryType" Multiplicity="1" Role="FromRole_assoc_F73BE3A97AC0818AA44D4240384F7EEA"/>
+				<End Type="GRCAUD_AUDIT_SRV.FRA_IV_UserInformationType" Multiplicity="0..1" Role="ToRole_assoc_F73BE3A97AC0818AA44D4240384F7EEA"/>
+			</Association>
+			<Association Name="assoc_848005675B1466E6337B36040FD159DF" sap:content-version="1">
+				<End Type="GRCAUD_AUDIT_SRV.GRCAUD_CV_AuditActivityHistoryType" Multiplicity="1" Role="FromRole_assoc_848005675B1466E6337B36040FD159DF"/>
+				<End Type="GRCAUD_AUDIT_SRV.GRCAUD_CV_ChangeDocumentType" Multiplicity="*" Role="ToRole_assoc_848005675B1466E6337B36040FD159DF"/>
+			</Association>
+			<Association Name="assoc_F7A415110F0D348DA4FE6A4232055371" sap:content-version="1">
+				<End Type="GRCAUD_AUDIT_SRV.GRCAUD_IV_AuditScopeSchemaType" Multiplicity="1" Role="FromRole_assoc_F7A415110F0D348DA4FE6A4232055371"/>
+				<End Type="GRCAUD_AUDIT_SRV.GRCAUD_IV_ScopeSchemaLevelType" Multiplicity="*" Role="ToRole_assoc_F7A415110F0D348DA4FE6A4232055371"/>
+			</Association>
+			<EntityContainer Name="GRCAUD_AUDIT_SRV_Entities" m:IsDefaultEntityContainer="true" sap:supported-formats="atom json xlsx">
+				<EntitySet Name="NameValuePairSet" EntityType="GRCAUD_AUDIT_SRV.NameValuePair" sap:creatable="false" sap:updatable="false"
+					sap:deletable="false" sap:pageable="false" sap:addressable="false" sap:content-version="1"/>
+				<EntitySet Name="FRA_IV_UserInformation" EntityType="GRCAUD_AUDIT_SRV.FRA_IV_UserInformationType" sap:creatable="false"
+					sap:updatable="false" sap:deletable="false" sap:searchable="true" sap:content-version="1"/>
+				<EntitySet Name="GRCAUD_CV_AdtblByAudit" EntityType="GRCAUD_AUDIT_SRV.GRCAUD_CV_AdtblByAuditType" sap:creatable="false"
+					sap:updatable="false" sap:deletable="false" sap:searchable="true" sap:content-version="1"/>
+				<EntitySet Name="GRCAUD_CV_AuditActivityHistory" EntityType="GRCAUD_AUDIT_SRV.GRCAUD_CV_AuditActivityHistoryType" sap:creatable="false"
+					sap:updatable="false" sap:deletable="false" sap:content-version="1"/>
+				<EntitySet Name="GRCAUD_CV_AuditCount" EntityType="GRCAUD_AUDIT_SRV.GRCAUD_CV_AuditCountType" sap:creatable="false" sap:updatable="false"
+					sap:deletable="false" sap:content-version="1"/>
+				<EntitySet Name="GRCAUD_CV_ChangeDocForUserRole" EntityType="GRCAUD_AUDIT_SRV.GRCAUD_CV_ChangeDocForUserRoleType" sap:creatable="false"
+					sap:updatable="false" sap:deletable="false" sap:content-version="1"/>
+				<EntitySet Name="GRCAUD_CV_ChangeDocument" EntityType="GRCAUD_AUDIT_SRV.GRCAUD_CV_ChangeDocumentType" sap:creatable="false"
+					sap:updatable="false" sap:deletable="false" sap:content-version="1"/>
+				<EntitySet Name="GRCAUD_CV_DimensionByAudit" EntityType="GRCAUD_AUDIT_SRV.GRCAUD_CV_DimensionByAuditType" sap:creatable="false"
+					sap:updatable="false" sap:deletable="false" sap:searchable="true" sap:content-version="1"/>
+				<EntitySet Name="GRCAUD_CV_Finding" EntityType="GRCAUD_AUDIT_SRV.GRCAUD_CV_FindingType" sap:creatable="false" sap:deletable="false"
+					sap:searchable="true" sap:content-version="1"/>
+				<EntitySet Name="GRCAUD_CV_OrganizationByAudit" EntityType="GRCAUD_AUDIT_SRV.GRCAUD_CV_OrganizationByAuditType" sap:creatable="false"
+					sap:updatable="false" sap:deletable="false" sap:searchable="true" sap:content-version="1"/>
+				<EntitySet Name="GRCAUD_CV_RiskByAudit" EntityType="GRCAUD_AUDIT_SRV.GRCAUD_CV_RiskByAuditType" sap:creatable="false" sap:updatable="false"
+					sap:deletable="false" sap:searchable="true" sap:content-version="1"/>
+				<EntitySet Name="GRCAUD_CV_AssignedScopeHier" EntityType="GRCAUD_AUDIT_SRV.GRCAUD_CV_AssignedScopeHierType" sap:creatable="false"
+					sap:updatable="false" sap:deletable="false" sap:content-version="1"/>
+				<EntitySet Name="GRCAUD_CV_UserRoleByScope" EntityType="GRCAUD_AUDIT_SRV.GRCAUD_CV_UserRoleByScopeType" sap:creatable="false"
+					sap:updatable="false" sap:deletable="false" sap:content-version="1"/>
+				<EntitySet Name="GRCAUD_EV_AuditExtension" EntityType="GRCAUD_AUDIT_SRV.GRCAUD_EV_AuditExtensionType" sap:creatable="false"
+					sap:updatable="false" sap:deletable="false" sap:content-version="1"/>
+				<EntitySet Name="GRCAUD_IV_AuditCategory" EntityType="GRCAUD_AUDIT_SRV.GRCAUD_IV_AuditCategoryType" sap:creatable="false"
+					sap:updatable="false" sap:deletable="false" sap:content-version="1"/>
+				<EntitySet Name="GRCAUD_IV_AuditGroup" EntityType="GRCAUD_AUDIT_SRV.GRCAUD_IV_AuditGroupType" sap:creatable="false" sap:updatable="false"
+					sap:deletable="false" sap:content-version="1"/>
+				<EntitySet Name="GRCAUD_IV_AuditScopeSchema" EntityType="GRCAUD_AUDIT_SRV.GRCAUD_IV_AuditScopeSchemaType" sap:creatable="false"
+					sap:updatable="false" sap:deletable="false" sap:content-version="1"/>
+				<EntitySet Name="GRCAUD_IV_AuditStatus" EntityType="GRCAUD_AUDIT_SRV.GRCAUD_IV_AuditStatusType" sap:creatable="false" sap:updatable="false"
+					sap:deletable="false" sap:content-version="1"/>
+				<EntitySet Name="GRCAUD_IV_AuditType" EntityType="GRCAUD_AUDIT_SRV.GRCAUD_IV_AuditTypeType" sap:creatable="false" sap:updatable="false"
+					sap:deletable="false" sap:content-version="1"/>
+				<EntitySet Name="GRCAUD_IV_ScopeSchemaLevel" EntityType="GRCAUD_AUDIT_SRV.GRCAUD_IV_ScopeSchemaLevelType" sap:creatable="false"
+					sap:updatable="false" sap:deletable="false" sap:content-version="1"/>
+				<EntitySet Name="GRCAUD_IV_Tag" EntityType="GRCAUD_AUDIT_SRV.GRCAUD_IV_TagType" sap:creatable="false" sap:updatable="false"
+					sap:deletable="false" sap:content-version="1"/>
+				<EntitySet Name="GRCAUD_IV_UserInformation" EntityType="GRCAUD_AUDIT_SRV.GRCAUD_IV_UserInformationType" sap:creatable="false"
+					sap:updatable="false" sap:deletable="false" sap:searchable="true" sap:content-version="1"/>
+				<EntitySet Name="GRCAUD_IV_UserRole" EntityType="GRCAUD_AUDIT_SRV.GRCAUD_IV_UserRoleType" sap:creatable="false" sap:updatable="false"
+					sap:deletable="false" sap:content-version="1"/>
+				<EntitySet Name="GRCAUD_CV_Audit" EntityType="GRCAUD_AUDIT_SRV.GRCAUD_CV_AuditType" sap:creatable="false" sap:deletable="false"
+					sap:content-version="1"/>
+				<AssociationSet Name="assoc_249B08D726A623E61F67EAFA47D350AC" Association="GRCAUD_AUDIT_SRV.assoc_249B08D726A623E61F67EAFA47D350AC"
+					sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:content-version="1">
+					<End EntitySet="GRCAUD_CV_Audit" Role="FromRole_assoc_249B08D726A623E61F67EAFA47D350AC"/>
+					<End EntitySet="GRCAUD_IV_UserRole" Role="ToRole_assoc_249B08D726A623E61F67EAFA47D350AC"/>
+				</AssociationSet>
+				<AssociationSet Name="assoc_E87F789C38450E86058C51A9BA18134F" Association="GRCAUD_AUDIT_SRV.assoc_E87F789C38450E86058C51A9BA18134F"
+					sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:content-version="1">
+					<End EntitySet="GRCAUD_CV_AuditActivityHistory" Role="FromRole_assoc_E87F789C38450E86058C51A9BA18134F"/>
+					<End EntitySet="FRA_IV_UserInformation" Role="ToRole_assoc_E87F789C38450E86058C51A9BA18134F"/>
+				</AssociationSet>
+				<AssociationSet Name="assoc_D0D788F8378F16808FC082CF589D9C3B" Association="GRCAUD_AUDIT_SRV.assoc_D0D788F8378F16808FC082CF589D9C3B"
+					sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:content-version="1">
+					<End EntitySet="GRCAUD_CV_Audit" Role="FromRole_assoc_D0D788F8378F16808FC082CF589D9C3B"/>
+					<End EntitySet="GRCAUD_IV_UserRole" Role="ToRole_assoc_D0D788F8378F16808FC082CF589D9C3B"/>
+				</AssociationSet>
+				<AssociationSet Name="assoc_ABA8402926C0193C3D295FFB2BC47906" Association="GRCAUD_AUDIT_SRV.assoc_ABA8402926C0193C3D295FFB2BC47906"
+					sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:content-version="1">
+					<End EntitySet="GRCAUD_CV_Audit" Role="FromRole_assoc_ABA8402926C0193C3D295FFB2BC47906"/>
+					<End EntitySet="GRCAUD_CV_OrganizationByAudit" Role="ToRole_assoc_ABA8402926C0193C3D295FFB2BC47906"/>
+				</AssociationSet>
+				<AssociationSet Name="assoc_CF6167F489EBA7292A7300585B0DC265" Association="GRCAUD_AUDIT_SRV.assoc_CF6167F489EBA7292A7300585B0DC265"
+					sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:content-version="1">
+					<End EntitySet="GRCAUD_CV_Audit" Role="FromRole_assoc_CF6167F489EBA7292A7300585B0DC265"/>
+					<End EntitySet="GRCAUD_CV_AdtblByAudit" Role="ToRole_assoc_CF6167F489EBA7292A7300585B0DC265"/>
+				</AssociationSet>
+				<AssociationSet Name="assoc_611BFF43E81BFE84D5868338A12B5BF0" Association="GRCAUD_AUDIT_SRV.assoc_611BFF43E81BFE84D5868338A12B5BF0"
+					sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:content-version="1">
+					<End EntitySet="GRCAUD_CV_Audit" Role="FromRole_assoc_611BFF43E81BFE84D5868338A12B5BF0"/>
+					<End EntitySet="GRCAUD_CV_AssignedScopeHier" Role="ToRole_assoc_611BFF43E81BFE84D5868338A12B5BF0"/>
+				</AssociationSet>
+				<AssociationSet Name="assoc_216F2CCDD5F4896E5C84CAE0130A0726" Association="GRCAUD_AUDIT_SRV.assoc_216F2CCDD5F4896E5C84CAE0130A0726"
+					sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:content-version="1">
+					<End EntitySet="GRCAUD_CV_Audit" Role="FromRole_assoc_216F2CCDD5F4896E5C84CAE0130A0726"/>
+					<End EntitySet="GRCAUD_IV_UserRole" Role="ToRole_assoc_216F2CCDD5F4896E5C84CAE0130A0726"/>
+				</AssociationSet>
+				<AssociationSet Name="assoc_716283DFA2E2B9962FF1CBD2E68998DB" Association="GRCAUD_AUDIT_SRV.assoc_716283DFA2E2B9962FF1CBD2E68998DB"
+					sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:content-version="1">
+					<End EntitySet="GRCAUD_CV_AuditActivityHistory" Role="FromRole_assoc_716283DFA2E2B9962FF1CBD2E68998DB"/>
+					<End EntitySet="GRCAUD_CV_ChangeDocForUserRole" Role="ToRole_assoc_716283DFA2E2B9962FF1CBD2E68998DB"/>
+				</AssociationSet>
+				<AssociationSet Name="assoc_DD1F0947E10EBFE43E037F52925090DF" Association="GRCAUD_AUDIT_SRV.assoc_DD1F0947E10EBFE43E037F52925090DF"
+					sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:content-version="1">
+					<End EntitySet="GRCAUD_CV_Audit" Role="FromRole_assoc_DD1F0947E10EBFE43E037F52925090DF"/>
+					<End EntitySet="GRCAUD_CV_DimensionByAudit" Role="ToRole_assoc_DD1F0947E10EBFE43E037F52925090DF"/>
+				</AssociationSet>
+				<AssociationSet Name="assoc_F73BE3A97AC0818AA44D4240384F7EEA" Association="GRCAUD_AUDIT_SRV.assoc_F73BE3A97AC0818AA44D4240384F7EEA"
+					sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:content-version="1">
+					<End EntitySet="GRCAUD_CV_AuditActivityHistory" Role="FromRole_assoc_F73BE3A97AC0818AA44D4240384F7EEA"/>
+					<End EntitySet="FRA_IV_UserInformation" Role="ToRole_assoc_F73BE3A97AC0818AA44D4240384F7EEA"/>
+				</AssociationSet>
+				<AssociationSet Name="assoc_35F27F87B9399271BF238C9AC569BD10" Association="GRCAUD_AUDIT_SRV.assoc_35F27F87B9399271BF238C9AC569BD10"
+					sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:content-version="1">
+					<End EntitySet="GRCAUD_CV_Audit" Role="FromRole_assoc_35F27F87B9399271BF238C9AC569BD10"/>
+					<End EntitySet="GRCAUD_CV_RiskByAudit" Role="ToRole_assoc_35F27F87B9399271BF238C9AC569BD10"/>
+				</AssociationSet>
+				<AssociationSet Name="assoc_276BF88BF7772E850C4B85DEB5C0DE8B" Association="GRCAUD_AUDIT_SRV.assoc_276BF88BF7772E850C4B85DEB5C0DE8B"
+					sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:content-version="1">
+					<End EntitySet="GRCAUD_CV_Audit" Role="FromRole_assoc_276BF88BF7772E850C4B85DEB5C0DE8B"/>
+					<End EntitySet="GRCAUD_IV_AuditType" Role="ToRole_assoc_276BF88BF7772E850C4B85DEB5C0DE8B"/>
+				</AssociationSet>
+				<AssociationSet Name="assoc_F7A415110F0D348DA4FE6A4232055371" Association="GRCAUD_AUDIT_SRV.assoc_F7A415110F0D348DA4FE6A4232055371"
+					sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:content-version="1">
+					<End EntitySet="GRCAUD_IV_AuditScopeSchema" Role="FromRole_assoc_F7A415110F0D348DA4FE6A4232055371"/>
+					<End EntitySet="GRCAUD_IV_ScopeSchemaLevel" Role="ToRole_assoc_F7A415110F0D348DA4FE6A4232055371"/>
+				</AssociationSet>
+				<AssociationSet Name="assoc_8EAFF50DE32C2911A3BA32F2F908065F" Association="GRCAUD_AUDIT_SRV.assoc_8EAFF50DE32C2911A3BA32F2F908065F"
+					sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:content-version="1">
+					<End EntitySet="GRCAUD_CV_Audit" Role="FromRole_assoc_8EAFF50DE32C2911A3BA32F2F908065F"/>
+					<End EntitySet="GRCAUD_EV_AuditExtension" Role="ToRole_assoc_8EAFF50DE32C2911A3BA32F2F908065F"/>
+				</AssociationSet>
+				<AssociationSet Name="assoc_5546C8031ECEA3DF59CEA9290C26B543" Association="GRCAUD_AUDIT_SRV.assoc_5546C8031ECEA3DF59CEA9290C26B543"
+					sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:content-version="1">
+					<End EntitySet="GRCAUD_CV_Audit" Role="FromRole_assoc_5546C8031ECEA3DF59CEA9290C26B543"/>
+					<End EntitySet="GRCAUD_CV_Finding" Role="ToRole_assoc_5546C8031ECEA3DF59CEA9290C26B543"/>
+				</AssociationSet>
+				<AssociationSet Name="assoc_E935EACCB7D2AF7B9EB4C4FE3779514E" Association="GRCAUD_AUDIT_SRV.assoc_E935EACCB7D2AF7B9EB4C4FE3779514E"
+					sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:content-version="1">
+					<End EntitySet="GRCAUD_CV_Audit" Role="FromRole_assoc_E935EACCB7D2AF7B9EB4C4FE3779514E"/>
+					<End EntitySet="GRCAUD_IV_AuditScopeSchema" Role="ToRole_assoc_E935EACCB7D2AF7B9EB4C4FE3779514E"/>
+				</AssociationSet>
+				<AssociationSet Name="assoc_1831BD4D7DC86A57F282ACEED158E182" Association="GRCAUD_AUDIT_SRV.assoc_1831BD4D7DC86A57F282ACEED158E182"
+					sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:content-version="1">
+					<End EntitySet="GRCAUD_CV_Audit" Role="FromRole_assoc_1831BD4D7DC86A57F282ACEED158E182"/>
+					<End EntitySet="GRCAUD_IV_UserRole" Role="ToRole_assoc_1831BD4D7DC86A57F282ACEED158E182"/>
+				</AssociationSet>
+				<AssociationSet Name="assoc_85D9EA933BFE8CCA8B67E6FF3D77B0C9" Association="GRCAUD_AUDIT_SRV.assoc_85D9EA933BFE8CCA8B67E6FF3D77B0C9"
+					sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:content-version="1">
+					<End EntitySet="GRCAUD_CV_Audit" Role="FromRole_assoc_85D9EA933BFE8CCA8B67E6FF3D77B0C9"/>
+					<End EntitySet="GRCAUD_IV_Tag" Role="ToRole_assoc_85D9EA933BFE8CCA8B67E6FF3D77B0C9"/>
+				</AssociationSet>
+				<AssociationSet Name="assoc_FB8F45CC9AE5250BB3BC832B5BC12415" Association="GRCAUD_AUDIT_SRV.assoc_FB8F45CC9AE5250BB3BC832B5BC12415"
+					sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:content-version="1">
+					<End EntitySet="GRCAUD_CV_Audit" Role="FromRole_assoc_FB8F45CC9AE5250BB3BC832B5BC12415"/>
+					<End EntitySet="GRCAUD_IV_AuditGroup" Role="ToRole_assoc_FB8F45CC9AE5250BB3BC832B5BC12415"/>
+				</AssociationSet>
+				<AssociationSet Name="assoc_848005675B1466E6337B36040FD159DF" Association="GRCAUD_AUDIT_SRV.assoc_848005675B1466E6337B36040FD159DF"
+					sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:content-version="1">
+					<End EntitySet="GRCAUD_CV_AuditActivityHistory" Role="FromRole_assoc_848005675B1466E6337B36040FD159DF"/>
+					<End EntitySet="GRCAUD_CV_ChangeDocument" Role="ToRole_assoc_848005675B1466E6337B36040FD159DF"/>
+				</AssociationSet>
+				<AssociationSet Name="assoc_4B970C212BFF0C5051FCE08769D84024" Association="GRCAUD_AUDIT_SRV.assoc_4B970C212BFF0C5051FCE08769D84024"
+					sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:content-version="1">
+					<End EntitySet="GRCAUD_CV_AuditActivityHistory" Role="FromRole_assoc_4B970C212BFF0C5051FCE08769D84024"/>
+					<End EntitySet="GRCAUD_IV_UserInformation" Role="ToRole_assoc_4B970C212BFF0C5051FCE08769D84024"/>
+				</AssociationSet>
+				<AssociationSet Name="assoc_1A6E1FCA329B04252A1AA505F7B36385" Association="GRCAUD_AUDIT_SRV.assoc_1A6E1FCA329B04252A1AA505F7B36385"
+					sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:content-version="1">
+					<End EntitySet="GRCAUD_CV_Audit" Role="FromRole_assoc_1A6E1FCA329B04252A1AA505F7B36385"/>
+					<End EntitySet="GRCAUD_IV_AuditStatus" Role="ToRole_assoc_1A6E1FCA329B04252A1AA505F7B36385"/>
+				</AssociationSet>
+				<AssociationSet Name="assoc_C4473C177A31D44C5B8A6AEE01CE1234" Association="GRCAUD_AUDIT_SRV.assoc_C4473C177A31D44C5B8A6AEE01CE1234"
+					sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:content-version="1">
+					<End EntitySet="GRCAUD_CV_AssignedScopeHier" Role="FromRole_assoc_C4473C177A31D44C5B8A6AEE01CE1234"/>
+					<End EntitySet="GRCAUD_CV_UserRoleByScope" Role="ToRole_assoc_C4473C177A31D44C5B8A6AEE01CE1234"/>
+				</AssociationSet>
+				<AssociationSet Name="assoc_CC32FA465BE112F2565AE72E8B3594EF" Association="GRCAUD_AUDIT_SRV.assoc_CC32FA465BE112F2565AE72E8B3594EF"
+					sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:content-version="1">
+					<End EntitySet="GRCAUD_CV_Audit" Role="FromRole_assoc_CC32FA465BE112F2565AE72E8B3594EF"/>
+					<End EntitySet="GRCAUD_CV_AuditCount" Role="ToRole_assoc_CC32FA465BE112F2565AE72E8B3594EF"/>
+				</AssociationSet>
+				<AssociationSet Name="assoc_51E50907FD2E2857491AC8D8CCFEFF47" Association="GRCAUD_AUDIT_SRV.assoc_51E50907FD2E2857491AC8D8CCFEFF47"
+					sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:content-version="1">
+					<End EntitySet="GRCAUD_CV_Audit" Role="FromRole_assoc_51E50907FD2E2857491AC8D8CCFEFF47"/>
+					<End EntitySet="GRCAUD_IV_UserRole" Role="ToRole_assoc_51E50907FD2E2857491AC8D8CCFEFF47"/>
+				</AssociationSet>
+				<AssociationSet Name="assoc_FD67CF739285C9DF8AB66F8B3C71FF38" Association="GRCAUD_AUDIT_SRV.assoc_FD67CF739285C9DF8AB66F8B3C71FF38"
+					sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:content-version="1">
+					<End EntitySet="GRCAUD_CV_Audit" Role="FromRole_assoc_FD67CF739285C9DF8AB66F8B3C71FF38"/>
+					<End EntitySet="GRCAUD_CV_AuditActivityHistory" Role="ToRole_assoc_FD67CF739285C9DF8AB66F8B3C71FF38"/>
+				</AssociationSet>
+				<AssociationSet Name="assoc_168D8D4656FBA4857EEDD432BB766F39" Association="GRCAUD_AUDIT_SRV.assoc_168D8D4656FBA4857EEDD432BB766F39"
+					sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:content-version="1">
+					<End EntitySet="GRCAUD_CV_Audit" Role="FromRole_assoc_168D8D4656FBA4857EEDD432BB766F39"/>
+					<End EntitySet="GRCAUD_IV_AuditCategory" Role="ToRole_assoc_168D8D4656FBA4857EEDD432BB766F39"/>
+				</AssociationSet>
+				<FunctionImport Name="GetAllowedWorkPaperCategories" ReturnType="Collection(GRCAUD_AUDIT_SRV.NameValuePair)" EntitySet="NameValuePairSet"
+					m:HttpMethod="GET">
+					<Parameter Name="Key" Type="Edm.Guid" Mode="In"/>
+				</FunctionImport>
+			</EntityContainer>
+			<Annotations xmlns="http://docs.oasis-open.org/odata/ns/edm" Target="GRCAUD_AUDIT_SRV.GRCAUD_CV_AuditType/Status">
+				<Annotation Term="Common.ValueList">
+					<Record>
+						<PropertyValue Property="Label" String="Audit Status"/>
+						<PropertyValue Property="CollectionPath" String="GRCAUD_IV_AuditStatus"/>
+						<PropertyValue Property="SearchSupported" Bool="false"/>
+						<PropertyValue Property="Parameters">
+							<Collection>
+								<Record Type="Common.ValueListParameterInOut">
+									<PropertyValue Property="LocalDataProperty" PropertyPath="Status"/>
+									<PropertyValue Property="ValueListProperty" String="AuditStatus"/>
+								</Record>
+							</Collection>
+						</PropertyValue>
+					</Record>
+				</Annotation>
+			</Annotations>
+			<Annotations xmlns="http://docs.oasis-open.org/odata/ns/edm" Target="GRCAUD_AUDIT_SRV.GRCAUD_CV_AuditType/Type">
+				<Annotation Term="Common.ValueList">
+					<Record>
+						<PropertyValue Property="Label" String="Audit Type"/>
+						<PropertyValue Property="CollectionPath" String="GRCAUD_IV_AuditType"/>
+						<PropertyValue Property="SearchSupported" Bool="false"/>
+						<PropertyValue Property="Parameters">
+							<Collection>
+								<Record Type="Common.ValueListParameterInOut">
+									<PropertyValue Property="LocalDataProperty" PropertyPath="Type"/>
+									<PropertyValue Property="ValueListProperty" String="AuditType"/>
+								</Record>
+							</Collection>
+						</PropertyValue>
+					</Record>
+				</Annotation>
+			</Annotations>
+			<Annotations xmlns="http://docs.oasis-open.org/odata/ns/edm" Target="GRCAUD_AUDIT_SRV.GRCAUD_CV_AuditType/AuditGroup">
+				<Annotation Term="Common.ValueList">
+					<Record>
+						<PropertyValue Property="Label" String="Audit Group"/>
+						<PropertyValue Property="CollectionPath" String="GRCAUD_IV_AuditGroup"/>
+						<PropertyValue Property="SearchSupported" Bool="false"/>
+						<PropertyValue Property="Parameters">
+							<Collection>
+								<Record Type="Common.ValueListParameterInOut">
+									<PropertyValue Property="LocalDataProperty" PropertyPath="AuditGroup"/>
+									<PropertyValue Property="ValueListProperty" String="AuditGroup"/>
+								</Record>
+							</Collection>
+						</PropertyValue>
+					</Record>
+				</Annotation>
+			</Annotations>
+			<Annotations xmlns="http://docs.oasis-open.org/odata/ns/edm" Target="GRCAUD_AUDIT_SRV.GRCAUD_CV_AuditType/Category">
+				<Annotation Term="Common.ValueList">
+					<Record>
+						<PropertyValue Property="Label" String="Audit Category"/>
+						<PropertyValue Property="CollectionPath" String="GRCAUD_IV_AuditCategory"/>
+						<PropertyValue Property="SearchSupported" Bool="false"/>
+						<PropertyValue Property="Parameters">
+							<Collection>
+								<Record Type="Common.ValueListParameterInOut">
+									<PropertyValue Property="LocalDataProperty" PropertyPath="Category"/>
+									<PropertyValue Property="ValueListProperty" String="AuditCategory"/>
+								</Record>
+							</Collection>
+						</PropertyValue>
+					</Record>
+				</Annotation>
+			</Annotations>
+			<Annotations xmlns="http://docs.oasis-open.org/odata/ns/edm" Target="GRCAUD_AUDIT_SRV.GRCAUD_CV_AuditType/AuditManager">
+				<Annotation Term="Common.ValueList">
+					<Record>
+						<PropertyValue Property="Label" String="User Role Assignment"/>
+						<PropertyValue Property="CollectionPath" String="GRCAUD_IV_UserRole"/>
+						<PropertyValue Property="SearchSupported" Bool="false"/>
+						<PropertyValue Property="Parameters">
+							<Collection>
+								<Record Type="Common.ValueListParameterInOut">
+									<PropertyValue Property="LocalDataProperty" PropertyPath="DBKey"/>
+									<PropertyValue Property="ValueListProperty" String="HostKey"/>
+								</Record>
+							</Collection>
+						</PropertyValue>
+					</Record>
+				</Annotation>
+			</Annotations>
+			<Annotations xmlns="http://docs.oasis-open.org/odata/ns/edm" Target="GRCAUD_AUDIT_SRV.GRCAUD_CV_AuditType/AuditLead">
+				<Annotation Term="Common.ValueList">
+					<Record>
+						<PropertyValue Property="Label" String="User Role Assignment"/>
+						<PropertyValue Property="CollectionPath" String="GRCAUD_IV_UserRole"/>
+						<PropertyValue Property="SearchSupported" Bool="false"/>
+						<PropertyValue Property="Parameters">
+							<Collection>
+								<Record Type="Common.ValueListParameterInOut">
+									<PropertyValue Property="LocalDataProperty" PropertyPath="DBKey"/>
+									<PropertyValue Property="ValueListProperty" String="HostKey"/>
+								</Record>
+							</Collection>
+						</PropertyValue>
+					</Record>
+				</Annotation>
+			</Annotations>
+			<atom:link xmlns:atom="http://www.w3.org/2005/Atom" rel="self" href=""/>
+			<atom:link xmlns:atom="http://www.w3.org/2005/Atom" rel="latest-version" href=""/>
+		</Schema>
+	</edmx:DataServices>
+</edmx:Edmx>

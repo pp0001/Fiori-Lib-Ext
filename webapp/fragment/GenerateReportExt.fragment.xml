@@ -1,0 +1,31 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core" xmlns:f="sap.ui.layout.form">
+	<Dialog id="generateReportExt" title="{acsLibAudI18n>generateReportTitle}" contentWidth="35%" contentHeight="75%">
+		<content>
+			<f:SimpleForm editable="true" layout="ResponsiveGridLayout" labelSpanXL="4" labelSpanL="4" labelSpanM="12"
+				labelSpanS="12" adjustLabelSpan="false" emptySpanXL="0" emptySpanL="0" emptySpanM="0" emptySpanS="0" columnsXL="2" columnsL="2" columnsM="2"
+				singleContainerFullSize="true">
+				<f:content>
+					<Label id="labelCategoryExt" text="{acsLibAudI18n>labelCategory}" required="true"/>
+					<Select id="categoryIdExt" ariaLabelledBy="labelCategory" forceSelection="false" 
+						items="{ path: '/GRCAUD_IV_ReportCategory', sorter: { path: 'CategoryText' } }">
+						<core:Item key="{CategoryID}" text="{CategoryText}"/>
+					</Select>
+					<Label id="labelGenerateRatingExt" text="{acsLibAudI18n>labelRating}" required="true"/>
+					<Select id="ratingIdExt" ariaLabelledBy="labelGenerateRating" forceSelection="false" 
+						items="{ path: '/GRCAUD_IV_ReportRating', sorter: { path: 'RatingText' } }">
+						<core:Item key="{RatingID}" text="{RatingText}"/>
+					</Select>
+					<Label id="labelTemplateExt" text="{acsLibAudI18n>labelTemplate}" required="true"/>
+					<Select id="templateIdGenerateExt" ariaLabelledBy="labelTemplate" forceSelection="false" 
+						items="{ path: '/GRCAUD_CV_FttplByPhase', filters: [{ path: 'Phase', operator: 'EQ', value1: 'D' }], sorter: { path: 'Title' } }" >
+						<core:Item key="{TemplateKey}" text="{Title}"/>
+					</Select>
+				</f:content>
+			</f:SimpleForm>
+		</content>
+		<buttons>
+			<Button text="{i18n>btnOK}" press="confirmGenerateReportBtnPress"/>
+			<Button text="{i18n>btnCancel}" press="cancelGenerateBtnPress"/>
+		</buttons>
+	</Dialog>
+</core:FragmentDefinition>

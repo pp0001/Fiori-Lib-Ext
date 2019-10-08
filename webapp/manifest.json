@@ -1,0 +1,227 @@
+{
+	"_version": "1.1.0",
+	"sap.app": {
+		"_version": "1.1.0",
+		"id": "grcaud.zpiao_aud_report_ext",
+		"type": "application",
+		"applicationVersion": {
+			"version": "1.0.0"
+		},
+		"title": "{{appTitle}}"
+	},
+	"sap.ui": {
+		"_version": "1.1.0",
+		"technology": "UI5",
+		"icons": {
+			"icon": "sap-icon://task",
+			"favIcon": ""
+		},
+		"deviceTypes": {
+			"desktop": true,
+			"tablet": true,
+			"phone": true
+		},
+		"supportedThemes": [
+			"sap_hcb",
+			"sap_bluecrystal",
+			"sap_belize"
+		]
+	},
+	"sap.ui5": {
+		"_version": "1.1.0",
+		"dependencies": {
+			"minUI5Version": "",
+			"libs": {
+				"sap.ui.core": {},
+				"sap.m": {},
+				"sap.ui.layout": {
+					"lazy": true
+				},
+				"sap.grc.acs.aud.finding": {
+					"minVersion": "2.7.0",
+					"lazy": false
+				},
+				"sap.grc.acs.lib": {
+					"minVersion": "2.7.0",
+					"lazy": true
+				},
+				"sap.grc.acs.aud.action": {
+					"minVersion": "2.7.0",
+					"lazy": true
+				},
+				"sap.grc.acs.aud.audit": {
+					"minVersion": "3.1.0-SNAPSHOT",
+					"lazy": false
+				}
+			}
+		},
+		"extends": {
+			"extensions": {
+				"sap.ui.controllerExtensions": {
+					"sap.grc.acs.lib.aud.doc.block.controller.WorkPaperList": {
+						"controllerName": "grcaud.zpiao_aud_report_ext.controller.BaseControllerExt"
+					}
+				}
+			}
+		},
+		"contentDensities": {
+			"compact": true,
+			"cozy": true
+		},
+		"config": {
+			"intents": {
+				"AuditEngagement-execute": {
+					"service": "GRCAUD_CV_MyOngoingAudit",
+					"type": "GRCAUD_CV_MyOngoingAuditType",
+					"appTitle": "appTitleExecute",
+					"tablePersistencyKey": "ExecuteAuditsTablePersKey",
+					"scopeIntent": {
+						"semanticObject": "AuditWorkPackage",
+						"action": "execute"
+					},
+					"findingIntent": {
+						"semanticObject": "Finding",
+						"action": "execute"
+					},
+					"workingPaperIntent": {
+						"semanticObject": "DocumentWorkingPaper",
+						"action": "execute"
+					},
+					"detectionWorkingPaperIntent": {
+						"semanticObject": "DetectionWorkingPaper",
+						"action": "execute"
+					},
+					"worklistFilterConfig": {
+						"bDisplayFilterFields": true,
+						"bDisplayStatusFilterOnly": false
+					},
+					"filterBarPersistencyKey": "ExecuteAuditsFilterBarPersKey",
+					"intent": "AuditEngagement-execute",
+					"auditScoreConfig": {
+						"isVisible": true
+					},
+					"standardFieldStatus": {
+						"PlannedStartDate": {
+							"editable": false,
+							"IgnoreAnnotation": true
+						},
+						"Company": {
+							"editable": false,
+							"mandatory": false,
+							"IgnoreAnnotation": true
+						},
+						"Country": {
+							"editable": false,
+							"mandatory": false,
+							"IgnoreAnnotation": true
+						}
+					}
+				}
+			},
+			"menuItemConfig": {
+				"AuditEngagement-execute": {
+					"Scenario": "AuditEngagement-execute",
+					"Section": {
+						"HEADER": "header",
+						"INFO": "generalSection",
+						"DIM": "dimensionSection",
+						"ADTBL": "adtblSection",
+						"RISK": "riskSection",
+						"TEAM": "userRoleSection",
+						"FIND": "findingSection",
+						"REPORT": "reportSection",
+						"WPA": "workingPaperSection",
+						"ORG": "organizationSection"
+					},
+					"Group": {},
+					"Button": {
+						"DOCWPA-UPLOA_FILE": {
+							"icon": "sap-icon://add"
+						},
+						"DOCWPA-DOWNLOAD_WPAZIP": {
+							"icon": "sap-icon://download"
+						},
+						"FIND-CREATE_FINDING": {
+							"icon": "sap-icon://add",
+							"text": ""
+						},
+						"FIND-UPDATE_FINDING": {
+							"relatedButtons": [
+								{
+									"icon": "",
+									"buttonId": "btnSave",
+									"textId": "btnSave",
+									"tooltipId": "tolSave",
+									"visible": false,
+									"pressHandler": "onSaveBtnPress"
+								},
+								{
+									"icon": "",
+									"buttonId": "btnCancel",
+									"textId": "btnCancel",
+									"tooltipId": "tolCancel",
+									"visible": false,
+									"pressHandler": "onCancelBtnPress"
+								}
+							]
+						}
+					},
+					"SmartForm": {
+						"section": "INFO",
+						"editableActionName": "UPDATE_ROOT"
+					}
+				}
+			},
+			"fieldExtensibility": {
+				"standardFieldStatus": {
+					"ActualCost": {
+						"visible": true,
+						"editable": true,
+						"mandatory": false
+					},
+					"ActualEffort": {
+						"visible": true,
+						"editable": true,
+						"mandatory": false
+					},
+					"ActualStartDate": {
+						"visible": true,
+						"editable": true,
+						"mandatory": false
+					},
+					"Title": {
+						"visible": true,
+						"editable": true,
+						"mandatory": true
+					},
+					"Scope": {
+						"visible": true,
+						"editable": false,
+						"mandatory": false
+					},
+					"Tag": {
+						"visible": true,
+						"editable": true,
+						"mandatory": false
+					},
+					"EstimatedEffort": {
+						"visible": true,
+						"editable": false,
+						"mandatory": false
+					},
+					"OrderNumber": {
+						"editable": true,
+						"mandatory": false
+					}
+				}
+			},
+			"worklistConfig": {
+				"resizedTable": false
+			}
+		}
+	},
+	"sap.platform.abap": {
+		"uri": "/sap/bc/ui5_ui5/sap/zpiao_test/webapp",
+		"_version": "1.1.0"
+	}
+}
